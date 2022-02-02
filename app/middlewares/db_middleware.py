@@ -4,6 +4,8 @@ from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 from sqlalchemy.orm import sessionmaker
 
+from app.dao.holder import HolderDao
+
 
 class DBMiddleware(BaseMiddleware):
     def __init__(self, pool: sessionmaker):
@@ -15,7 +17,7 @@ class DBMiddleware(BaseMiddleware):
             event: TelegramObject,
             data: Dict[str, Any]
     ) -> Any:
-        async with self.pool as session:
-            data["session"] = session
+        async with self.pool() as session:
+            data["dao"] = HolderDao.create(session)
             await handler(event, data)
-            del data["session"]
+            del data["dao"]
