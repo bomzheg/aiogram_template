@@ -17,16 +17,16 @@ def load_config(app_dir: Path) -> Config:
 
     load_dotenv(paths.app_dir / ".env")
     setup_logging(paths)
+    with (paths.config_path / "config.yaml").open("r") as f:
+        config_dct = yaml.safe_load(f)
     return Config(
         paths=paths,
         db=load_db_config(paths.config_path),
-        bot=load_bot_config(paths)
+        bot=load_bot_config(config_dct["bot"])
     )
 
 
-def load_bot_config(paths: Paths):
-    with (paths.config_path / "config.yaml").open("r") as f:
-        dct = yaml.safe_load(f)
+def load_bot_config(dct: dict) -> BotConfig:
     return BotConfig(
         token=dct["token"],
     )
