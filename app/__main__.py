@@ -7,7 +7,7 @@ from aiogram.dispatcher.filters import ContentTypesFilter
 from app.config import load_config
 from app.handlers import setup_handlers
 from app.middlewares import setup_middlewares
-from app.models.db.base import create_pool
+from app.models.db import create_pool
 
 logger = logging.getLogger(__name__)
 
