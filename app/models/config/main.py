@@ -9,6 +9,7 @@ from app.models.config.db import DBConfig
 class Config:
     paths: Paths
     db: DBConfig
+    bot: BotConfig
 
     @property
     def app_dir(self) -> Path:
@@ -38,3 +39,8 @@ class Paths:
     @property
     def log_path(self) -> Path:
         return self.app_dir / "log"
+
+
+@dataclass
+class BotConfig:
+    token: str
