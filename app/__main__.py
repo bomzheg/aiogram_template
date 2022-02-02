@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 
 from aiogram import Dispatcher, Bot
+from aiogram.dispatcher.filters import ContentTypesFilter
 
 from app.config import load_config
 from app.handlers import setup_handlers
@@ -14,6 +15,7 @@ def main():
     config = load_config(app_dir)
 
     dp = Dispatcher()
+    dp.message.bind_filter(ContentTypesFilter)
     setup_handlers(dp)
 
     bot = Bot(config.bot.token, parse_mode="HTML")

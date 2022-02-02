@@ -1,5 +1,5 @@
 from aiogram import Dispatcher
-from aiogram.types import Message
+from aiogram.types import Message, ContentType
 
 
 async def echo(message: Message):
@@ -7,4 +7,4 @@ async def echo(message: Message):
 
 
 def setup_echo(dp: Dispatcher):
-    dp.message.register(echo, content_type="text")
+    dp.message.register(echo, content_types=ContentType.TEXT)
