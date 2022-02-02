@@ -7,15 +7,18 @@ from sqlalchemy import pool
 from alembic import context
 from sqlalchemy.ext.asyncio import AsyncEngine
 
-from app.config import load_config
+from app.config.db import load_db_config
+from app.models.config.db import DBConfig
+from app.models.config.main import Paths
 from app.models.db.base import Base
 
-config = load_config(Path(__file__).parent.parent)
 
+app_dir = Path(__file__).parent.parent
+config = load_db_config(Paths(app_dir).config_path)
 target_metadata = Base.metadata
 
 
-def run_migrations_offline():
+def run_migrations_offline(db_config: DBConfig):
     """Run migrations in 'offline' mode.
 
     This configures the context with just a URL
@@ -28,7 +31,7 @@ def run_migrations_offline():
 
     """
     context.configure(
-        url=config.db.uri,
+        url=db_config.uri,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -45,7 +48,7 @@ def do_run_migrations(connection):
         context.run_migrations()
 
 
-async def run_migrations_online():
+async def run_migrations_online(db_config: DBConfig):
     """Run migrations in 'online' mode.
 
     In this scenario we need to create an Engine
@@ -54,7 +57,7 @@ async def run_migrations_online():
     """
     connectable = AsyncEngine(
         create_engine(
-            config.db.uri,
+            db_config.uri,
             poolclass=pool.NullPool,
             future=True,
         )
@@ -69,6 +72,6 @@ async def run_migrations_online():
 
 
 if context.is_offline_mode():
-    run_migrations_offline()
+    run_migrations_offline(config)
 else:
-    asyncio.run(run_migrations_online())
+    asyncio.run(run_migrations_online(config))

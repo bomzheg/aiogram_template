@@ -4,4 +4,4 @@ host: localhost
 port: 5432
 login: postgres
 password: postgres
-name: daily
+name: daily_reminder
