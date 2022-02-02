@@ -148,3 +148,4 @@ dmypy.json
 *.xlsx
 
 /temp/
+/config/
