@@ -22,3 +22,9 @@ class BaseDAO(Generic[Model]):
             select(self.model).where(self.model.id == id_)
         )
         return result.scalar_one()
+
+    def save(self, obj: Model):
+        self.session.add(obj)
+
+    async def commit(self):
+        await self.session.commit()
