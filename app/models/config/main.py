@@ -44,3 +44,4 @@ class Paths:
 @dataclass
 class BotConfig:
     token: str
+    log_chat: int

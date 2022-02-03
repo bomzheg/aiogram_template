@@ -29,4 +29,5 @@ def load_config(app_dir: Path) -> Config:
 def load_bot_config(dct: dict) -> BotConfig:
     return BotConfig(
         token=dct["token"],
+        log_chat=dct["log_chat"],
     )

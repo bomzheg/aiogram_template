@@ -19,7 +19,7 @@ def main():
     dp = Dispatcher()
     dp.message.bind_filter(ContentTypesFilter)
     setup_middlewares(dp, create_pool(config.db))
-    setup_handlers(dp)
+    setup_handlers(dp, config.bot)
 
     bot = Bot(config.bot.token, parse_mode="HTML")
 
