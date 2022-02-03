@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Text, BigInteger
+from sqlalchemy import Column, Text, BigInteger, Enum
 
+from app.enums.chat_type import ChatType
 from app.models.db.base import Base
 
 
@@ -8,6 +9,7 @@ class Chat(Base):
     __mapper_args__ = {"eager_defaults": True}
     id = Column(BigInteger, primary_key=True)
     tg_id = Column(BigInteger, unique=True)
+    type = Column(Enum(ChatType))
     title = Column(Text, nullable=True)
     username = Column(Text, nullable=True)
 
