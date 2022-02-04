@@ -1,0 +1,7 @@
+type: postgresql
+connector: asyncpg
+host: localhost
+port: 5432
+login: postgres
+password: postgres
+name: daily_test

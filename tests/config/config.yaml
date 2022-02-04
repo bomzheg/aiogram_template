@@ -1,0 +1,5 @@
+bot:
+  token: "123:ABC"
+  log_chat: -1001234567890
+  superusers:
+    - 46866565
