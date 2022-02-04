@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app.dao.holder import HolderDao
 from app.mapper import user_mapper, chat_mapper
+from app.models import db
 from app.services.chat import upsert_chat
 from app.services.user import upsert_user
 
@@ -30,14 +31,14 @@ class DBMiddleware(BaseMiddleware):
             return result
 
 
-async def save_user(data: dict[str, Any], holder_dao: HolderDao):
+async def save_user(data: dict[str, Any], holder_dao: HolderDao) -> db.User:
     return await upsert_user(
         user_mapper.from_aiogram_to_dto(data["event_from_user"]),
         holder_dao.user
     )
 
 
-async def save_chat(data: dict[str, Any], holder_dao: HolderDao):
+async def save_chat(data: dict[str, Any], holder_dao: HolderDao) -> db.Chat:
     return await upsert_chat(
         chat_mapper.from_aiogram_to_dto(data["event_chat"]),
         holder_dao.chat
