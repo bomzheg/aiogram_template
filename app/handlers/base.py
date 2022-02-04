@@ -17,10 +17,5 @@ async def chat_id(message: Message):
     await message.reply(text, disable_notification=True)
 
 
-async def exception(message: Message):
-    raise RuntimeError(message.text)
-
-
-def setup_echo(dp: Dispatcher):
-    dp.message.register(exception, commands="exception")
+def setup_base(dp: Dispatcher):
     dp.message.register(chat_id, commands=["idchat", "chat_id", "id"], commands_prefix=r"\!")
