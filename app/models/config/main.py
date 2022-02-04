@@ -45,3 +45,4 @@ class Paths:
 class BotConfig:
     token: str
     log_chat: int
+    superusers: list[int]
