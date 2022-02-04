@@ -1,4 +1,4 @@
-from typing import Callable, Dict, Any, Awaitable
+from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
@@ -16,27 +16,28 @@ class DBMiddleware(BaseMiddleware):
 
     async def __call__(
             self,
-            handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+            handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],
             event: TelegramObject,
-            data: Dict[str, Any]
+            data: dict[str, Any]
     ) -> Any:
         async with self.pool() as session:
             holder_dao = HolderDao.create(session)
             data["dao"] = holder_dao
             data["user"] = await save_user(data, holder_dao)
             data["chat"] = await save_chat(data, holder_dao)
-            await handler(event, data)
+            result = await handler(event, data)
             del data["dao"]
+            return result
 
 
-async def save_user(data: Dict[str, Any], holder_dao: HolderDao):
+async def save_user(data: dict[str, Any], holder_dao: HolderDao):
     return await upsert_user(
         user_mapper.from_aiogram_to_dto(data["event_from_user"]),
         holder_dao.user
     )
 
 
-async def save_chat(data: Dict[str, Any], holder_dao: HolderDao):
+async def save_chat(data: dict[str, Any], holder_dao: HolderDao):
     return await upsert_chat(
         chat_mapper.from_aiogram_to_dto(data["event_chat"]),
         holder_dao.chat
