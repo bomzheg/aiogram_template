@@ -15,6 +15,12 @@ async def upsert_chat(chat: dto.Chat, dao: ChatDao) -> db.Chat:
     return saved_chat
 
 
+async def update_chat_id(chat: db.Chat, new_tg_id: int, chat_dao: ChatDao):
+    chat.tg_id = new_tg_id
+    chat_dao.save(chat)
+    await chat_dao.commit()
+
+
 def update_fields(source: dto.Chat, target: db.Chat):
     target.title = source.name
     target.username = source.username
