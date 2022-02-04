@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 def setup_logging(paths: Paths):
-    log_dir = paths.log_path
-    log_dir.mkdir(exist_ok=True)
     with paths.logging_config_file.open("r") as f:
         logging_config = yaml.safe_load(f)
         with suppress(KeyError):
+            log_dir = paths.log_path
             patch_filename(logging_config['handlers']['file'], log_dir)
+            log_dir.mkdir(exist_ok=True)
         logging.config.dictConfig(logging_config)
     logger.info("Logging configured successfully")
 
