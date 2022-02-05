@@ -7,7 +7,7 @@ from aiogram.types import Message, ReplyKeyboardRemove, ContentType
 from aiogram.utils.markdown import html_decoration as hd
 
 from app.dao.holder import HolderDao
-from app.models.db import Chat
+from app.models import dto
 from app.services.chat import update_chat_id
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ async def cancel_state(message: Message, state: FSMContext):
     await message.reply('Диалог прекращён, данные удалены', reply_markup=ReplyKeyboardRemove())
 
 
-async def chat_migrate(message: Message, chat: Chat, dao: HolderDao):
+async def chat_migrate(message: Message, chat: dto.Chat, dao: HolderDao):
     new_id = message.migrate_to_chat_id
     await update_chat_id(chat, new_id, dao.chat)
     logger.info(f"Migrate chat from %s to %s", message.chat.id, new_id)
