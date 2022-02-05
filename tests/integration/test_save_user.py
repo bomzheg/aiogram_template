@@ -10,8 +10,12 @@ from tests.utils.user import assert_user
 
 @pytest.mark.asyncio
 async def test_save_user(session: AsyncSession):
+    dao = HolderDao(session)
+    await dao.user.delete_all()
+
     data = dict(event_from_user=create_tg_user())
-    actual = await save_user(data, HolderDao(session))
+    actual = await save_user(data, dao)
     expected = dto.User.from_db(create_db_user())
     assert_user(expected, actual)
     assert actual.db_id is not None
+    assert await dao.user.count() == 1

@@ -1,3 +1,4 @@
+from sqlalchemy import delete, func
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, TypeVar, Type, Generic
@@ -25,6 +26,17 @@ class BaseDAO(Generic[Model]):
 
     def save(self, obj: Model):
         self.session.add(obj)
+
+    async def delete_all(self):
+        await self.session.execute(
+            delete(self.model)
+        )
+
+    async def count(self):
+        result = await self.session.execute(
+            select(func.count(self.model.id))
+        )
+        return result.scalar_one()
 
     async def commit(self):
         await self.session.commit()
