@@ -4,6 +4,7 @@ from app.enums.chat_type import ChatType
 from app.models import dto, db
 
 CHAT_ID = 42
+NEW_CHAT_ID = -10048
 TITLE = "My awesome chat"
 TYPE = ChatType.group
 USERNAME = "ultra_chat"
