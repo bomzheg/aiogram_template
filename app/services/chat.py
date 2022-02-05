@@ -8,6 +8,6 @@ async def upsert_chat(chat: dto.Chat, dao: ChatDao) -> dto.Chat:
     return saved_chat
 
 
-async def update_chat_id(chat: dto.Chat, new_tg_id: int, chat_dao: ChatDao):
-    await chat_dao.update_chat_id(chat, new_tg_id)
-    await chat_dao.commit()
+async def update_chat_id(chat: dto.Chat, new_tg_id: int, dao: ChatDao):
+    await dao.update_chat_id(chat, new_tg_id)
+    await dao.commit()

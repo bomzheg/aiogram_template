@@ -28,3 +28,6 @@ class BaseDAO(Generic[Model]):
 
     async def commit(self):
         await self.session.commit()
+
+    async def flush(self, *objects):
+        await self.session.flush(*objects)

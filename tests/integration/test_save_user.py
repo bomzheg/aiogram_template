@@ -15,7 +15,7 @@ async def test_save_user():
     config = create_app_config()
     pool = create_pool(config.db)
     async with pool() as session:
-        actual = await save_user(data, HolderDao.create(session))
+        actual = await save_user(data, HolderDao(session))
     expected = dto.User.from_db(create_db_user())
     assert_user(expected, actual)
     assert actual.db_id is not None

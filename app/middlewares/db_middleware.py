@@ -21,7 +21,7 @@ class DBMiddleware(BaseMiddleware):
             data: dict[str, Any]
     ) -> Any:
         async with self.pool() as session:
-            holder_dao = HolderDao.create(session)
+            holder_dao = HolderDao(session)
             data["dao"] = holder_dao
             data["user"] = await save_user(data, holder_dao)
             data["chat"] = await save_chat(data, holder_dao)
