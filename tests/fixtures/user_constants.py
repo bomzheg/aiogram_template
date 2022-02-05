@@ -20,10 +20,11 @@ def create_user() -> User:
 
 def create_dto_user() -> dto.User:
     return dto.User(
-        id=ID,
+        tg_id=ID,
         first_name=FIRST_NAME,
         last_name=LAST_NAME,
         username=USERNAME,
+        is_bot=False,
     )
 
 
@@ -33,4 +34,5 @@ def create_db_user() -> db.User:
         first_name=FIRST_NAME,
         last_name=LAST_NAME,
         username=USERNAME,
+        is_bot=False,
     )

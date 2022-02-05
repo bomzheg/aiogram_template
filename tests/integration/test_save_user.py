@@ -2,6 +2,7 @@ import pytest
 
 from app.dao.holder import HolderDao
 from app.middlewares.db_middleware import save_user
+from app.models import dto
 from app.models.db import create_pool
 from tests.common import create_app_config
 from tests.fixtures.user_constants import create_user, create_db_user
@@ -15,5 +16,6 @@ async def test_save_user():
     pool = create_pool(config.db)
     async with pool() as session:
         actual = await save_user(data, HolderDao.create(session))
-    expected = create_db_user()
-    assert assert_user(expected, actual)
+    expected = dto.User.from_db(create_db_user())
+    assert_user(expected, actual)
+    assert actual.db_id is not None

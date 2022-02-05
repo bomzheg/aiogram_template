@@ -5,8 +5,8 @@ from aiogram.types import TelegramObject
 from sqlalchemy.orm import sessionmaker
 
 from app.dao.holder import HolderDao
-from app.mapper import user_mapper, chat_mapper
-from app.models import db
+from app.mapper import chat_mapper
+from app.models import db, dto
 from app.services.chat import upsert_chat
 from app.services.user import upsert_user
 
@@ -31,9 +31,9 @@ class DBMiddleware(BaseMiddleware):
             return result
 
 
-async def save_user(data: dict[str, Any], holder_dao: HolderDao) -> db.User:
+async def save_user(data: dict[str, Any], holder_dao: HolderDao) -> dto.User:
     return await upsert_user(
-        user_mapper.from_aiogram_to_dto(data["event_from_user"]),
+        dto.User.from_aiogram(data["event_from_user"]),
         holder_dao.user
     )
 
