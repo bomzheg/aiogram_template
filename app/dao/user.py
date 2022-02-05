@@ -25,6 +25,7 @@ class UserDao(BaseDAO[User]):
         was_changed = update_fields(source=user, target=saved_user)
         if was_changed:
             self.save(saved_user)
+            await self.flush(saved_user)
         return dto.User.from_db(saved_user)
 
 

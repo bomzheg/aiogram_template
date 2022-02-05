@@ -8,7 +8,7 @@ LAST_NAME = "Potter"
 USERNAME = "voldemort_killer"
 
 
-def create_user() -> User:
+def create_tg_user() -> User:
     return User(
         id=ID,
         username=USERNAME,

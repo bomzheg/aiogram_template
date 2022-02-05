@@ -25,6 +25,7 @@ class ChatDao(BaseDAO[Chat]):
         was_changed = update_fields(chat, saved_chat)
         if was_changed:
             self.save(saved_chat)
+            await self.flush(saved_chat)
         return dto.Chat.from_db(saved_chat)
 
     async def update_chat_id(self, chat: dto.Chat, new_id: int):
