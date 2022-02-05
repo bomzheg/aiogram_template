@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dao.holder import HolderDao
-from app.middlewares.db_middleware import save_user
+from app.middlewares.data_load_middleware import save_user
 from app.models import dto
 from tests.fixtures.user_constants import create_tg_user, create_db_user
 from tests.utils.user import assert_user

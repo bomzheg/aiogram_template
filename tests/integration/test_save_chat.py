@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dao.holder import HolderDao
-from app.middlewares.db_middleware import save_chat
+from app.middlewares.data_load_middleware import save_chat
 from app.models import dto
 from app.services.chat import update_chat_id, upsert_chat
 from tests.fixtures.chat_constants import create_tg_chat, create_db_chat, create_dto_chat, NEW_CHAT_ID
