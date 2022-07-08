@@ -3,6 +3,7 @@ from pathlib import Path
 from alembic.config import Config as AlembicConfig
 
 from app.config import load_config
+from app.config.logging_config import setup_logging
 from app.models.config import Config
 from app.models.config.main import Paths
 
@@ -20,4 +21,6 @@ def create_alembic_config() -> AlembicConfig:
 
 
 def create_app_config() -> Config:
-    return load_config(Paths(tests_dir))
+    paths = Paths(tests_dir)
+    setup_logging(paths)
+    return load_config(paths)

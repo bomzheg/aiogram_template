@@ -12,12 +12,12 @@ handlers:
     level: DEBUG
     formatter: colored
     stream: ext://sys.stdout
-  file:
-    class: logging.FileHandler
+  out:
+    class: logging.StreamHandler
     level: DEBUG
     formatter: simple
-    filename: app.log
+    stream: ext://sys.stdout
 root:
   level: DEBUG
-  handlers: [console, file]
+  handlers: [out, file]
 disable_existing_loggers: false
