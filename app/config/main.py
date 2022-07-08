@@ -12,9 +12,12 @@ logger = logging.getLogger(__name__)
 def load_config(paths: Paths) -> Config:
     with (paths.config_path / "config.yaml").open("r") as f:
         config_dct = yaml.safe_load(f)
+    with (paths.config_path / "db.yaml").open("r") as f:
+        db_dict = yaml.safe_load(f)
+
     return Config(
         paths=paths,
-        db=load_db_config(paths.config_path),
+        db=load_db_config(db_dict),
         bot=load_bot_config(config_dct["bot"])
     )
 

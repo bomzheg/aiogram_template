@@ -4,6 +4,7 @@ from alembic.config import Config as AlembicConfig
 
 from app.config import load_config
 from app.models.config import Config
+from app.models.config.main import Paths
 
 app_dir = Path(__file__).parent.parent
 tests_dir = app_dir / "tests"
@@ -19,4 +20,4 @@ def create_alembic_config() -> AlembicConfig:
 
 
 def create_app_config() -> Config:
-    return load_config(tests_dir)
+    return load_config(Paths(tests_dir))

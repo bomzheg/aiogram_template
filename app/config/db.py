@@ -1,13 +1,8 @@
-from pathlib import Path
-
-import yaml
 
 from app.models.config.db import DBConfig
 
 
-def load_db_config(config_path: Path) -> DBConfig:
-    with (config_path / "db.yaml").open("r") as f:
-        db_dict = yaml.safe_load(f)
+def load_db_config(db_dict: dict) -> DBConfig:
     return DBConfig(
         type=db_dict.get('type', None),
         connector=db_dict.get('connector', None),

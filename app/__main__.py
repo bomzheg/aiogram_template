@@ -1,4 +1,5 @@
 import logging
+import os
 from pathlib import Path
 
 from aiogram import Dispatcher, Bot
@@ -15,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    paths = Paths(Path(__file__).parent.parent)  # TODO get this dir from env
+    paths = get_paths()
 
     setup_logging(paths)
     config = load_config(paths)
@@ -29,6 +30,12 @@ def main():
 
     logger.info("started")
     dp.run_polling(bot)
+
+
+def get_paths() -> Paths:
+    if path := os.getenv("BOT_PATH"):
+        return Paths(Path(path))
+    return Paths(Path(__file__).parent.parent)
 
 
 if __name__ == '__main__':
