@@ -4,6 +4,7 @@ from pathlib import Path
 
 from aiogram import Dispatcher, Bot
 from aiogram.dispatcher.filters import ContentTypesFilter
+from sqlalchemy.orm import close_all_sessions
 
 from app.config import load_config
 from app.config.logging_config import setup_logging
@@ -29,7 +30,11 @@ def main():
     bot = Bot(config.bot.token, parse_mode="HTML")
 
     logger.info("started")
-    dp.run_polling(bot)
+    try:
+        dp.run_polling(bot)
+    finally:
+        close_all_sessions()
+        logger.info("stopped")
 
 
 def get_paths() -> Paths:
