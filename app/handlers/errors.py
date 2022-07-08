@@ -1,6 +1,6 @@
 import logging
 
-import ujson
+import json
 from aiogram import Dispatcher, Bot
 from aiogram.types import Update
 from functools import partial
@@ -20,7 +20,7 @@ async def handle(update: Update, exception: Exception, log_chat_id: int, bot: Bo
     await bot.send_message(
         log_chat_id,
         f"Получено исключение {exception.__class__.__name__}\n"
-        f"во время обработки апдейта {hd.quote(ujson.dumps(update.dict(exclude_none=True), default=str))}\n"
+        f"во время обработки апдейта {hd.quote(json.dumps(update.dict(exclude_none=True), default=str))}\n"
         f"{hd.quote(exception.args[0])}"
     )
 
