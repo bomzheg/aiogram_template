@@ -3,3 +3,11 @@ bot:
   log_chat: -1001234567890
   superusers:
     - 666
+db:
+  type: postgresql
+  connector: asyncpg
+  host: localhost
+  port: 5432
+  login: postgres
+  password: postgres
+  name: aiogram_template_bot
