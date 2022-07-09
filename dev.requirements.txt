@@ -3,3 +3,4 @@
 pytest
 pytest-asyncio
 sqlalchemy2-stubs
+testcontainers
