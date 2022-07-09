@@ -1,5 +1,7 @@
 -r requirements.txt
 
 pytest
+pytest-ordering
 pytest-asyncio
 sqlalchemy2-stubs
+testcontainers

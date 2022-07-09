@@ -7,16 +7,13 @@ and mistakes in migrations forever.
 
 import pytest
 from alembic.command import downgrade, upgrade
+from alembic.config import Config
 from alembic.script import Script, ScriptDirectory
-
-from tests.common import create_alembic_config
-
-alembic_config = create_alembic_config()
 
 
 def get_revisions():
     # Get directory object with Alembic migrations
-    revisions_dir = ScriptDirectory.from_config(alembic_config)
+    revisions_dir = ScriptDirectory("../migrations")
 
     # Get & sort migrations, from first to last
     revisions = list(revisions_dir.walk_revisions('base', 'heads'))
@@ -24,8 +21,17 @@ def get_revisions():
     return revisions
 
 
+@pytest.fixture()
+def alembic_config(postgres_url: str) -> Config:
+    alembic_cfg = Config("../alembic.ini")
+    alembic_cfg.set_main_option("script_location", "../migrations")
+    alembic_cfg.set_main_option("sqlalchemy.url", postgres_url)
+    return alembic_cfg
+
+
+@pytest.mark.first
 @pytest.mark.parametrize('revision', get_revisions())
-def test_migrations_stairway(revision: Script):
+def test_migrations_stairway(revision: Script, alembic_config: Config):
     upgrade(alembic_config, revision.revision)
 
     # We need -1 for downgrading first migration (its down_revision is None)
