@@ -29,6 +29,7 @@ def alembic_config(postgres_url: str) -> Config:
     return alembic_cfg
 
 
+@pytest.mark.first
 @pytest.mark.parametrize('revision', get_revisions())
 def test_migrations_stairway(revision: Script, alembic_config: Config):
     upgrade(alembic_config, revision.revision)
