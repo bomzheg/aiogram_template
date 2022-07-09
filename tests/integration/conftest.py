@@ -9,16 +9,21 @@ from testcontainers.postgres import PostgresContainer
 logger = logging.getLogger(__name__)
 
 
-@pytest.fixture()
-async def session(postgres_url: str) -> AsyncSession:
-    engine = create_async_engine(url=postgres_url)
-    pool = sessionmaker(bind=engine, class_=AsyncSession,
-                        expire_on_commit=False, autoflush=False)
+@pytest.fixture
+async def session(pool: sessionmaker) -> AsyncSession:
     async with pool() as session:
         yield session
 
 
-@pytest.fixture()
+@pytest.fixture(scope="session")
+async def pool(postgres_url: str) -> sessionmaker:
+    engine = create_async_engine(url=postgres_url)
+    pool = sessionmaker(bind=engine, class_=AsyncSession,
+                        expire_on_commit=False, autoflush=False)
+    return pool
+
+
+@pytest.fixture(scope="session")
 async def postgres_url() -> str:
     with PostgresContainer("postgres:13") as postgres:
         postgres_url = postgres.get_connection_url().replace("psycopg2", "asyncpg")
