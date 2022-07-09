@@ -4,4 +4,4 @@ pytest
 pytest-ordering
 pytest-asyncio
 sqlalchemy2-stubs
-testcontainers
+testcontainers[postgresql]
