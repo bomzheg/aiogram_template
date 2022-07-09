@@ -5,7 +5,7 @@ import pytest
 
 from app.config.logging_config import setup_logging
 from app.models.config.main import Paths, Config
-from config.main import load_config
+from app.config.main import load_config
 
 
 @pytest.fixture(scope="session", autouse=True)
