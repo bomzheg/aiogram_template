@@ -18,15 +18,15 @@ async def session(pool: sessionmaker) -> AsyncSession:
 @pytest.fixture(scope="session")
 async def pool(postgres_url: str) -> sessionmaker:
     engine = create_async_engine(url=postgres_url)
-    pool = sessionmaker(bind=engine, class_=AsyncSession,
-                        expire_on_commit=False, autoflush=False)
-    return pool
+    pool_ = sessionmaker(bind=engine, class_=AsyncSession,
+                         expire_on_commit=False, autoflush=False)
+    return pool_
 
 
 @pytest.fixture(scope="session")
 async def postgres_url() -> str:
-    with PostgresContainer("postgres:13") as postgres:
+    with PostgresContainer("postgres:11") as postgres:
         postgres_url = postgres.get_connection_url().replace("psycopg2", "asyncpg")
         logger.info("postgres url %s", postgres_url)
-        return postgres_url
+        yield postgres_url
 
