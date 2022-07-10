@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 
 from aiogram import Dispatcher, Bot
-from aiogram.dispatcher.filters import ContentTypesFilter
 from sqlalchemy.orm import close_all_sessions
 
 from app.config import load_config
@@ -23,7 +22,6 @@ def main():
     config = load_config(paths)
 
     dp = Dispatcher()
-    dp.message.bind_filter(ContentTypesFilter)
     setup_middlewares(dp, create_pool(config.db), config.bot)
     setup_handlers(dp, config.bot)
 
