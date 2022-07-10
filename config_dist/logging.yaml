@@ -19,5 +19,5 @@ handlers:
     stream: ext://sys.stdout
 root:
   level: DEBUG
-  handlers: [out, file]
+  handlers: [console]
 disable_existing_loggers: false
