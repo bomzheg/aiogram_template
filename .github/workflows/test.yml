@@ -1,9 +1,11 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-name: BotTest
+name: TemplateBotTest
 
 on:
+  workflow_call:
+
   pull_request:
     branches: [ master ]
 
