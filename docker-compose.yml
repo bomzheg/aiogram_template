@@ -5,10 +5,10 @@ services:
   template_bot:
     container_name: template_bot
     restart: always
-    image: bomzheg/karmabot
+    image: bomzheg/aiogram_template
     volumes:
       - type: "bind"
-        source: "${HOME}/TemplateBot/log/karmabot/"
+        source: "${HOME}/TemplateBot/log"
         target: "/log"
       - type: "bind"
         source: "./config"
