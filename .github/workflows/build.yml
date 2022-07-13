@@ -9,7 +9,7 @@ on:
 
 jobs:
   call-test-workflow:
-    uses: ./.github/workflows/test.yml@master
+    uses: ./.github/workflows/test.yml
   build:
     runs-on: ubuntu-latest
 
