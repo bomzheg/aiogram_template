@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
-@pytest.mark.asyncio
 async def session(pool: sessionmaker) -> AsyncSession:
     async with pool() as session:
         yield session
