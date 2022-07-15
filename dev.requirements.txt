@@ -2,6 +2,6 @@
 
 pytest
 pytest-ordering
-pytest-asyncio
+pytest-asyncio==0.18.3
 sqlalchemy2-stubs
 testcontainers[postgresql]
