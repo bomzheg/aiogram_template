@@ -10,13 +10,14 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture
+@pytest.mark.asyncio
 async def session(pool: sessionmaker) -> AsyncSession:
     async with pool() as session:
         yield session
 
 
 @pytest.fixture(scope="session")
-async def pool(postgres_url: str) -> sessionmaker:
+def pool(postgres_url: str) -> sessionmaker:
     engine = create_async_engine(url=postgres_url)
     pool_ = sessionmaker(bind=engine, class_=AsyncSession,
                          expire_on_commit=False, autoflush=False)
@@ -24,7 +25,7 @@ async def pool(postgres_url: str) -> sessionmaker:
 
 
 @pytest.fixture(scope="session")
-async def postgres_url() -> str:
+def postgres_url() -> str:
     with PostgresContainer("postgres:11") as postgres:
         postgres_url = postgres.get_connection_url().replace("psycopg2", "asyncpg")
         logger.info("postgres url %s", postgres_url)
