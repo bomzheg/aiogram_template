@@ -4,9 +4,12 @@ bot:
   superusers:
     - 666
   botapi:
-    type: local
-    botapi_url: "http://telegram-bot-api:8081"
-    file_url: "http://nginx:80"
+    # can be official (api.telegram.org)
+    type: official
+#    # or local (setup in docker-compose.yml)
+#    type: local
+#    botapi_url: "http://telegram-bot-api:8081"
+#    file_url: "http://nginx:80"
 db:
   type: postgresql
   connector: asyncpg
