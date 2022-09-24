@@ -9,6 +9,7 @@ from testcontainers.postgres import PostgresContainer
 
 from app.dao.holder import HolderDao
 from app.models.config import Config
+from tests.mocks.config import DBConfig
 
 logger = logging.getLogger(__name__)
 
@@ -34,10 +35,16 @@ def pool(postgres_url: str) -> sessionmaker:
 
 @pytest.fixture(scope="session")
 def postgres_url(app_config: Config) -> str:
-    if os.name == "nt":  # windows testcontainers now not working
-        yield app_config.db.uri
-    else:
-        with PostgresContainer("postgres:11") as postgres:
-            postgres_url_ = postgres.get_connection_url().replace("psycopg2", "asyncpg")
-            logger.info("postgres url %s", postgres_url_)
-            yield postgres_url_
+
+    postgres = PostgresContainer("postgres:11")
+    if os.name == "nt":  # TODO workaround from testcontainers/testcontainers-python#108
+        postgres.get_container_host_ip = lambda: 'localhost'
+    try:
+        postgres.start()
+        postgres_url_ = postgres.get_connection_url().replace("psycopg2", "asyncpg")
+        logger.info("postgres url %s", postgres_url_)
+        app_config.db = DBConfig(postgres_url_)
+        yield postgres_url_
+    finally:
+        postgres.stop()
+
