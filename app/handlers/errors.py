@@ -19,8 +19,8 @@ async def handle(error: ErrorEvent, log_chat_id: int, bot: Bot):
         return
     await bot.send_message(
         log_chat_id,
-        f"Получено исключение {hd.quote(str(error.exception))}\n"
-        f"во время обработки апдейта "
+        f"Received exception {hd.quote(str(error.exception))}\n"
+        f"by processing update "
         f"{hd.quote(json.dumps(error.update.dict(exclude_none=True), default=str)[:3500])}\n"
     )
 

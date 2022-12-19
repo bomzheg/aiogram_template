@@ -14,10 +14,13 @@ from app.services.chat import update_chat_id
 logger = logging.getLogger(__name__)
 
 
+async def start_cmd(message: Message):
+    await message.reply("Hi!")
+
 async def chat_id(message: Message):
     text = (
-        f"id этого чата: {hd.pre(message.chat.id)}\n"
-        f"Ваш id: {hd.pre(message.from_user.id)}"
+        f"chat_id: {hd.pre(message.chat.id)}\n"
+        f"your user_id: {hd.pre(message.from_user.id)}"
     )
     if message.reply_to_message:
         text += (
@@ -35,7 +38,7 @@ async def cancel_state(message: Message, state: FSMContext):
     # Cancel state and inform user about it
     await state.clear()
     # And remove keyboard (just in case)
-    await message.reply('Диалог прекращён, данные удалены', reply_markup=ReplyKeyboardRemove())
+    await message.reply('Dialog stopped, data removed', reply_markup=ReplyKeyboardRemove())
 
 
 async def chat_migrate(message: Message, chat: dto.Chat, dao: HolderDao):
