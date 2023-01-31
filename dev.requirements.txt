@@ -1,7 +1,6 @@
 -r requirements.txt
 
-pytest
-pytest-ordering
+pytest~=7.1.3
+pytest-ordering~=0.6
 pytest-asyncio==0.18.3
-sqlalchemy2-stubs
-testcontainers[postgresql]
+testcontainers[postgresql]~=3.7.1

@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Text, BigInteger, Enum
+from sqlalchemy import Enum
+from sqlalchemy.orm import mapped_column, Mapped
 
 from app.enums.chat_type import ChatType
 from app.models.db.base import Base
@@ -7,11 +8,11 @@ from app.models.db.base import Base
 class Chat(Base):
     __tablename__ = "chats"
     __mapper_args__ = {"eager_defaults": True}
-    id = Column(BigInteger, primary_key=True)
-    tg_id = Column(BigInteger, unique=True)
-    type = Column(Enum(ChatType))
-    title = Column(Text, nullable=True)
-    username = Column(Text, nullable=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tg_id: Mapped[int] = mapped_column(unique=True)
+    type: Mapped[ChatType] = mapped_column(Enum(ChatType))
+    title: Mapped[str]
+    username: Mapped[str]
 
     def __repr__(self):
         rez = (

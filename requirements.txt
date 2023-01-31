@@ -1,9 +1,8 @@
-python-dotenv>=0.19.2
-pyyaml>=6.0
-colorlog
+pyyaml~=6.0
+colorlog~=6.7.0
 aiogram>=3.0.0b5
 aiogram_dialog>=2.0.0b11
-sqlalchemy>=1.4
-alembic
-asyncpg
-ujson
+sqlalchemy~=2.0
+alembic~=1.9.2
+asyncpg~=0.27
+ujson~=5.5.0

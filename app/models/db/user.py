@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Text, BigInteger, Boolean
+from sqlalchemy.orm import mapped_column, Mapped
 
 from app.models.db.base import Base
 
@@ -6,12 +6,12 @@ from app.models.db.base import Base
 class User(Base):
     __tablename__ = "users"
     __mapper_args__ = {"eager_defaults": True}
-    id = Column(BigInteger, primary_key=True)
-    tg_id = Column(BigInteger, unique=True)
-    first_name = Column(Text, nullable=True)
-    last_name = Column(Text, nullable=True)
-    username = Column(Text, nullable=True)
-    is_bot = Column(Boolean, default=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    tg_id: Mapped[int] = mapped_column(unique=True)
+    first_name: Mapped[str]
+    last_name: Mapped[str]
+    username: Mapped[str]
+    is_bot: Mapped[bool] = mapped_column(default=False)
 
     def __repr__(self):
         rez = (
