@@ -17,6 +17,7 @@ logger = logging.getLogger(__name__)
 async def start_cmd(message: Message):
     await message.reply("Hi!")
 
+
 async def chat_id(message: Message):
     text = (
         f"chat_id: {hd.pre(message.chat.id)}\n"
