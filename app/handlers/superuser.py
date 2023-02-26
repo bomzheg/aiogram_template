@@ -1,4 +1,4 @@
-from aiogram import Dispatcher, Bot
+from aiogram import Dispatcher, Bot, Router
 from aiogram.filters import Command
 from aiogram.types import Message
 from functools import partial
@@ -17,6 +17,9 @@ async def leave_chat(message: Message, bot: Bot):
 
 def setup_superuser(dp: Dispatcher, bot_config: BotConfig):
     is_superuser_ = partial(is_superuser, superusers=bot_config.superusers)
+    router = Router(name=__name__)
+    router.message.filter(is_superuser_)
+    router.message.register(exception, Command(commands="exception"))
+    router.message.register(leave_chat, Command(commands="get_out"))
 
-    dp.message.register(exception, is_superuser_, Command(commands="exception"))
-    dp.message.register(leave_chat, is_superuser_, Command(commands="get_out"))
+    dp.include_router(router)
