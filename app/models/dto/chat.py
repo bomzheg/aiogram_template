@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from aiogram import types as tg
 
 from app.enums.chat_type import ChatType
-from app.models import db
 
 
 @dataclass
@@ -37,14 +36,4 @@ class Chat:
             username=chat.username,
             first_name=chat.first_name,
             last_name=chat.last_name,
-        )
-
-    @classmethod
-    def from_db(cls, chat: db.Chat) -> Chat:
-        return cls(
-            tg_id=chat.tg_id,
-            db_id=chat.id,
-            title=chat.title,
-            type=chat.type,
-            username=chat.username,
         )

@@ -2,6 +2,7 @@ from sqlalchemy import Enum
 from sqlalchemy.orm import mapped_column, Mapped
 
 from app.enums.chat_type import ChatType
+from app.models import dto
 from app.models.db.base import Base
 
 
@@ -23,3 +24,12 @@ class Chat(Base):
         if self.username:
             rez += f"username=@{self.username}"
         return rez + ">"
+
+    def to_dto(self) -> dto.Chat:
+        return dto.Chat(
+            db_id=self.id,
+            tg_id=self.tg_id,
+            type=self.type,
+            title=self.title,
+            username=self.username,
+        )

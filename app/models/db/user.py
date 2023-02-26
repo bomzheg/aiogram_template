@@ -1,5 +1,6 @@
 from sqlalchemy.orm import mapped_column, Mapped
 
+from app.models import dto
 from app.models.db.base import Base
 
 
@@ -22,3 +23,13 @@ class User(Base):
         if self.username:
             rez += f"username=@{self.username}"
         return rez + ">"
+
+    def to_dto(self) -> dto.User:
+        return dto.User(
+            db_id=self.id,
+            tg_id=self.tg_id,
+            first_name=self.first_name,
+            last_name=self.last_name,
+            username=self.username,
+            is_bot=self.is_bot,
+        )
