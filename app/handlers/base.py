@@ -49,6 +49,7 @@ async def chat_migrate(message: Message, chat: dto.Chat, dao: HolderDao):
 
 
 def setup_base(dp: Dispatcher):
+    dp.message.register(start_cmd, Command("start"))
     dp.message.register(
         chat_id, Command(commands=["idchat", "chat_id", "id"], prefix="/!"),
     )
