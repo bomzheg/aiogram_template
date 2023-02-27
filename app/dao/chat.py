@@ -7,7 +7,7 @@ from app.models import dto
 from app.models.db import Chat
 
 
-class ChatDao(BaseDAO[Chat]):
+class ChatDAO(BaseDAO[Chat]):
     def __init__(self, session: AsyncSession):
         super().__init__(Chat, session)
 

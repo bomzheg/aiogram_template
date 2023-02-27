@@ -7,7 +7,7 @@ from app.models.db import User
 from app.models import dto
 
 
-class UserDao(BaseDAO[User]):
+class UserDAO(BaseDAO[User]):
     def __init__(self, session: AsyncSession):
         super().__init__(User, session)
 
