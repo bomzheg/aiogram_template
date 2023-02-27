@@ -2,13 +2,13 @@ from typing import Callable, Any, Awaitable
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from app.dao.holder import HolderDao
 
 
 class DBMiddleware(BaseMiddleware):
-    def __init__(self, pool: sessionmaker):
+    def __init__(self, pool: async_sessionmaker[AsyncSession]):
         self.pool = pool
 
     async def __call__(

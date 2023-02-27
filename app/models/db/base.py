@@ -1,7 +1,7 @@
 from sqlalchemy import MetaData
 from sqlalchemy.engine import make_url
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy.orm import DeclarativeBase
 
 from app.models.config.db import DBConfig
 
@@ -19,9 +19,9 @@ class Base(DeclarativeBase):
     metadata = meta
 
 
-def create_pool(db_config: DBConfig) -> sessionmaker:
+def create_pool(db_config: DBConfig) -> async_sessionmaker[AsyncSession]:
     engine = create_async_engine(url=make_url(db_config.uri))
-    pool = sessionmaker(
+    pool: async_sessionmaker[AsyncSession] = async_sessionmaker(
         bind=engine,
         class_=AsyncSession,
         expire_on_commit=False,
