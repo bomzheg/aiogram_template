@@ -1,4 +1,4 @@
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -18,27 +18,19 @@ class UserDao(BaseDAO[User]):
         return result.scalar_one()
 
     async def upsert_user(self, user: dto.User) -> dto.User:
-        try:
-            saved_user = await self.get_by_tg_id(user.tg_id)
-        except NoResultFound:
-            saved_user = User(tg_id=user.tg_id)
-        was_changed = update_fields(source=user, target=saved_user)
-        if was_changed:
-            self.save(saved_user)
-            await self.flush(saved_user)
-        return saved_user.to_dto()
-
-
-def update_fields(target: User, source: dto.User) -> bool:
-    if all([
-        target.first_name == source.first_name,
-        target.last_name == source.last_name,
-        target.username == source.username,
-        target.is_bot == source.is_bot,
-    ]):
-        return False
-    target.first_name = source.first_name
-    target.last_name = source.last_name
-    target.username = source.username
-    target.is_bot = source.is_bot
-    return True
+        kwargs = dict(
+            tg_id=user.tg_id,
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            is_bot=user.is_bot,
+        )
+        saved_user = await self.session.execute(
+            insert(User)
+            .values(**kwargs)
+            .on_conflict_do_update(
+                index_elements=(User.tg_id,), set_=kwargs, where=User.tg_id == user.tg_id
+            )
+            .returning(User)
+        )
+        return saved_user.scalar_one().to_dto()
