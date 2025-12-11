@@ -1,6 +1,6 @@
 from aiogram.types import User
 
-from app.models import dto, db
+from app.models import db, dto
 
 ID = 666
 FIRST_NAME = "Harry"
@@ -9,8 +9,10 @@ USERNAME = "voldemort_killer"
 
 
 def create_tg_user(
-    id_: int = ID, username: str = USERNAME,
-    first_name: str = FIRST_NAME, last_name: str = LAST_NAME,
+    id_: int = ID,
+    username: str = USERNAME,
+    first_name: str = FIRST_NAME,
+    last_name: str = LAST_NAME,
 ) -> User:
     return User(
         id=id_,

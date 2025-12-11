@@ -1,28 +1,28 @@
 import logging
 import os
 from pathlib import Path
+from typing import NoReturn
 
-from aiogram import Dispatcher, Bot
+from aiogram import Bot, Dispatcher
 from sqlalchemy.orm import close_all_sessions
 
 from app.config import load_config
 from app.config.logging_config import setup_logging
-from app.handlers import setup_handlers
-from app.middlewares import setup_middlewares
 from app.models.config.main import Paths
-from app.models.db import create_pool
+from app.tgbot.handlers import setup_handlers
+from app.tgbot.middlewares import setup_middlewares
 
 logger = logging.getLogger(__name__)
 
 
-def main():
+def main() -> NoReturn:
     paths = get_paths()
 
     setup_logging(paths)
     config = load_config(paths)
 
     dp = Dispatcher()
-    setup_middlewares(dp, create_pool(config.db), config.bot)
+    setup_middlewares(dp)
     setup_handlers(dp, config.bot)
     bot = Bot(
         token=config.bot.token,
@@ -41,8 +41,8 @@ def main():
 def get_paths() -> Paths:
     if path := os.getenv("BOT_PATH"):
         return Paths(Path(path))
-    return Paths(Path(__file__).parent.parent)
+    return Paths(Path(__file__).parents[2])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

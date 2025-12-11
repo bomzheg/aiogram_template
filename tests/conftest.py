@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 
 from app.config.logging_config import setup_logging
-from app.models.config.main import Paths, Config
 from app.config.main import load_config
+from app.models.config.main import Config, Paths
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -15,12 +15,12 @@ def app_config(paths: Paths) -> Config:
 
 
 @pytest.fixture(scope="session")
-def paths():
+def paths() -> Paths:
     return Paths(Path(__file__).parent)
 
 
 @pytest.fixture(scope="session")
-def event_loop():
+def event_loop() -> asyncio.AbstractEventLoop:
     try:
         return asyncio.get_running_loop()
     except RuntimeError:

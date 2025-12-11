@@ -1,19 +1,20 @@
-import logging
-
 import json
-from aiogram import Dispatcher, Bot
+import logging
 from functools import partial
 
+from aiogram import Bot, Dispatcher
 from aiogram.types.error_event import ErrorEvent
 from aiogram.utils.markdown import html_decoration as hd
 
 logger = logging.getLogger(__name__)
 
 
-async def handle(error: ErrorEvent, log_chat_id: int, bot: Bot):
+async def handle(error: ErrorEvent, log_chat_id: int, bot: Bot) -> None:
     logger.exception(
         "Cause unexpected exception %s, by processing %s",
-        error.exception.__class__.__name__, error.update.dict(exclude_none=True), exc_info=error.exception,
+        error.exception.__class__.__name__,
+        error.update.dict(exclude_none=True),
+        exc_info=error.exception,
     )
     if not log_chat_id:
         return
@@ -21,9 +22,9 @@ async def handle(error: ErrorEvent, log_chat_id: int, bot: Bot):
         log_chat_id,
         f"Received exception {hd.quote(str(error.exception))}\n"
         f"by processing update "
-        f"{hd.quote(json.dumps(error.update.dict(exclude_none=True), default=str)[:3500])}\n"
+        f"{hd.quote(json.dumps(error.update.dict(exclude_none=True), default=str)[:3500])}\n",
     )
 
 
-def setup_errors(dp: Dispatcher, log_chat_id: int):
+def setup_errors(dp: Dispatcher, log_chat_id: int) -> None:
     dp.errors.register(partial(handle, log_chat_id=log_chat_id))

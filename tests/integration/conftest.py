@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Generator
 
 import pytest
 import pytest_asyncio
@@ -28,17 +29,14 @@ async def dao(session: AsyncSession) -> HolderDao:
 @pytest.fixture(scope="session")
 def pool(postgres_url: str) -> sessionmaker:
     engine = create_async_engine(url=postgres_url)
-    pool_ = sessionmaker(bind=engine, class_=AsyncSession,
-                         expire_on_commit=False, autoflush=False)
-    return pool_
+    return sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)
 
 
 @pytest.fixture(scope="session")
-def postgres_url(app_config: Config) -> str:
-
+def postgres_url(app_config: Config) -> Generator[str, None, None]:
     postgres = PostgresContainer("postgres:11")
-    if os.name == "nt":  # TODO workaround from testcontainers/testcontainers-python#108
-        postgres.get_container_host_ip = lambda: 'localhost'
+    if os.name == "nt":  # TODO workaround from testcontainers-python#108  # noqa: FIX002
+        postgres.get_container_host_ip = lambda: "localhost"
     try:
         postgres.start()
         postgres_url_ = postgres.get_connection_url().replace("psycopg2", "asyncpg")
@@ -47,4 +45,3 @@ def postgres_url(app_config: Config) -> str:
         yield postgres_url_
     finally:
         postgres.stop()
-

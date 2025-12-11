@@ -10,7 +10,7 @@ from app.models.config.main import BotConfig
 logger = logging.getLogger(__name__)
 
 
-def setup_handlers(dp: Dispatcher, bot_config: BotConfig):
+def setup_handlers(dp: Dispatcher, bot_config: BotConfig) -> None:
     setup_errors(dp, bot_config.log_chat)
     setup_base(dp)
     setup_superuser(dp, bot_config)

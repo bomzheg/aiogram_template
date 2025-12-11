@@ -8,17 +8,20 @@ from app.models.db import Chat
 
 
 class ChatDAO(BaseDAO[Chat]):
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession) -> None:
         super().__init__(Chat, session)
 
     async def get_by_tg_id(self, tg_id: int) -> Chat:
-        result = await self.session.execute(
-            select(Chat).where(Chat.tg_id == tg_id)
-        )
+        result = await self.session.execute(select(Chat).where(Chat.tg_id == tg_id))
         return result.scalar_one()
 
     async def upsert_chat(self, chat: dto.Chat) -> dto.Chat:
-        kwargs = dict(tg_id=chat.tg_id, title=chat.title, username=chat.username, type=chat.type)
+        kwargs = {
+            "tg_id": chat.tg_id,
+            "title": chat.title,
+            "username": chat.username,
+            "type": chat.type,
+        }
         saved_chat = await self.session.scalars(
             insert(Chat)
             .values(**kwargs)
@@ -29,7 +32,7 @@ class ChatDAO(BaseDAO[Chat]):
         )
         return saved_chat.one().to_dto()
 
-    async def update_chat_id(self, chat: dto.Chat, new_id: int):
+    async def update_chat_id(self, chat: dto.Chat, new_id: int) -> None:
         chat_db = await self.get_by_tg_id(chat.tg_id)
         chat_db.tg_id = new_id
         self.save(chat_db)

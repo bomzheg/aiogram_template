@@ -13,12 +13,12 @@ from alembic.script import Script, ScriptDirectory
 from app.models.config.main import Paths
 
 
-def get_revisions():
+def get_revisions() -> list[Script]:
     # Get directory object with Alembic migrations
     revisions_dir = ScriptDirectory("migrations")
 
     # Get & sort migrations, from first to last
-    revisions = list(revisions_dir.walk_revisions('base', 'heads'))
+    revisions = list(revisions_dir.walk_revisions("base", "heads"))
     revisions.reverse()
     return revisions
 
@@ -31,11 +31,11 @@ def alembic_config(postgres_url: str, paths: Paths) -> Config:
     return alembic_cfg
 
 
-@pytest.mark.first
-@pytest.mark.parametrize('revision', get_revisions())
-def test_migrations_stairway(revision: Script, alembic_config: Config):
+@pytest.mark.first()
+@pytest.mark.parametrize("revision", get_revisions())
+def test_migrations_stairway(revision: Script, alembic_config: Config) -> None:
     upgrade(alembic_config, revision.revision)
 
     # We need -1 for downgrading first migration (its down_revision is None)
-    downgrade(alembic_config, revision.down_revision or '-1')
+    downgrade(alembic_config, revision.down_revision or "-1")
     upgrade(alembic_config, revision.revision)

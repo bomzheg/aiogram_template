@@ -100,15 +100,20 @@ line-length = 99
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
-    "RUF001", "S101", "D", "ANN101", "S311", "PD008", "UP035", "C408", "C417",
-    "ANN102", "EM101", "TRY003", "PIE790", "RET505", "A003",  "EM102", "RUF003",
-    "RET503", "RET502", "ARG005", "TCH003", "RUF002", "SIM108", "UP024", "ISC001",
-    "FA102", "RUF015", "FIX002", "TD002", "TD003", "TD004", "TD005", "FA100",
+    "D",  # docstrings
+    "ANN101", "ANN102",  # annotations for self and cls
+    "EM101",  # forbidden exceptions with string literals
+    "TRY003",  # forbidden long text messages for create exceptions
+    "FA100", "FA102",  # from future import annotation related
+    "TD002", "TD003", "TD004", "TD005",  # useless TO DO rules
+    "COM812", "ISC001",  # conflicted rules with ruff format
+    "TCH001", "TCH002", "TCH003",  # required TYPE_CHECKING block
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]
 "tests/*" = [
+    "S101",
 ]
 "**/migrations/versions/*" = ["N999"]
 

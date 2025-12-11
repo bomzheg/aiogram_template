@@ -18,11 +18,11 @@ class Chat:
     last_name: str | None = None
 
     @property
-    def full_name(self):
+    def full_name(self) -> str:
         return self.first_name + " " + self.last_name or ""
 
     @property
-    def name(self):
+    def name(self) -> str:
         if self.type == ChatType.private:
             return self.full_name
         return self.title
