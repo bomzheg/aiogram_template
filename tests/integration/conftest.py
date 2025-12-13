@@ -6,6 +6,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 import pytest_asyncio
+from aiogram import Bot, Dispatcher
 from aiogram.client.session.base import BaseSession
 from dishka import AsyncContainer, Provider, Scope, make_async_container
 from testcontainers.postgres import PostgresContainer
@@ -67,6 +68,14 @@ async def request_dishka(dishka: AsyncContainer) -> AsyncGenerator[AsyncContaine
 @pytest_asyncio.fixture
 async def bot_session(dishka: AsyncContainer) -> BaseSession:
     return await dishka.get(BaseSession)
+
+@pytest_asyncio.fixture
+async def bot(dishka: AsyncContainer) -> Bot:
+    return await dishka.get(Bot)
+
+@pytest_asyncio.fixture
+async def dp(dishka: AsyncContainer) -> Dispatcher:
+    return await dishka.get(Dispatcher)
 
 
 @pytest.fixture(autouse=True)

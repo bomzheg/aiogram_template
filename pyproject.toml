@@ -24,7 +24,7 @@ dependencies = [
     "fastapi==0.111.1",
     "uvicorn>=0.30.0,<0.31.0",
     "greenlet<4.0.0",
-    "dishka==1.5.2",
+    "dishka==1.7.2",
     "asgi-monitor>=0.4.0,<0.5.0",
 ]
 
