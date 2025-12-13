@@ -101,18 +101,6 @@ class DpProvider(Provider):
     def get_event_isolation(self, redis: Redis) -> BaseEventIsolation:
         return RedisEventIsolation(redis)
 
-    @provide
-    def create_session(self, server: TelegramAPIServer) -> AiohttpSession | None:
-        return AiohttpSession(api=server)
-
-    @provide
-    def create_server(self, config: BotConfig) -> TelegramAPIServer:
-        if config.bot_api.type != BotApiType.local:
-            return PRODUCTION
-        return TelegramAPIServer(
-            base=f"{config.bot_api.botapi_url}/bot{{token}}/{{method}}",
-            file=f"{config.bot_api.botapi_file_url}{{path}}",
-        )
 
 
 class BotIdpProvider(Provider):

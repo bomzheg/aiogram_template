@@ -7,3 +7,9 @@ from app.models.config.db import DBConfig
 class DBConfigMock(DBConfig):
     _uri: str
     echo: bool = False
+
+    @property
+    def uri(self) -> str:
+        return self._uri
+
+

@@ -2,11 +2,13 @@ from typing import AsyncIterable
 
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
+from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.client.session.base import BaseSession
+from aiogram.client.telegram import TelegramAPIServer, PRODUCTION
 from aiogram.enums import ParseMode
 from dishka import Provider, Scope, provide
 
-from app.models.config.main import BotConfig
+from app.models.config.main import BotConfig, BotApiType
 
 
 class BotProvider(Provider):
@@ -23,3 +25,16 @@ class BotProvider(Provider):
             ),
         ) as bot:
             yield bot
+
+    @provide
+    def create_session(self, server: TelegramAPIServer) -> BaseSession:
+        return AiohttpSession(api=server)
+
+    @provide
+    def create_server(self, config: BotConfig) -> TelegramAPIServer:
+        if config.bot_api.type != BotApiType.local:
+            return PRODUCTION
+        return TelegramAPIServer(
+            base=f"{config.bot_api.botapi_url}/bot{{token}}/{{method}}",
+            file=f"{config.bot_api.botapi_file_url}{{path}}",
+        )
