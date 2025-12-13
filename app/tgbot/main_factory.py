@@ -3,7 +3,7 @@ import logging
 from aiogram import Dispatcher
 from aiogram.fsm.storage.base import BaseEventIsolation, BaseStorage, DefaultKeyBuilder
 from aiogram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
-from aiogram.fsm.storage.redis import RedisEventIsolation, RedisStorage
+from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.types import TelegramObject
 from dishka import (
     STRICT_VALIDATION,
@@ -15,7 +15,6 @@ from dishka import (
     provide,
 )
 from dishka.integrations.aiogram import AiogramMiddlewareData, setup_dishka
-from redis.asyncio import Redis
 
 from app.core.identity import IdentityProvider
 from app.di import get_providers

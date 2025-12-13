@@ -69,9 +69,11 @@ async def request_dishka(dishka: AsyncContainer) -> AsyncGenerator[AsyncContaine
 async def bot_session(dishka: AsyncContainer) -> BaseSession:
     return await dishka.get(BaseSession)
 
+
 @pytest_asyncio.fixture
 async def bot(dishka: AsyncContainer) -> Bot:
     return await dishka.get(Bot)
+
 
 @pytest_asyncio.fixture
 async def dp(dishka: AsyncContainer) -> Dispatcher:

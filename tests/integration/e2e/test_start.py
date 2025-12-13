@@ -1,20 +1,17 @@
-from datetime import datetime, timezone
 import typing
+from datetime import datetime, timezone
 from unittest.mock import MagicMock
 
-import pytest_asyncio
-from aiogram import Dispatcher, Bot
+from aiogram import Bot, Dispatcher
 from aiogram.client.session.base import BaseSession
-from aiogram.types import Update, Message
+from aiogram.types import Message, Update
 
 from app.dao.holder import HolderDao
 from tests.fixtures.chat_constants import create_tg_chat
 from tests.fixtures.user_constants import create_tg_user
 
 
-async def test_start(
-    dp: Dispatcher, bot: Bot, dao: HolderDao, bot_session: BaseSession
-):
+async def test_start(dp: Dispatcher, bot: Bot, dao: HolderDao, bot_session: BaseSession) -> None:
     user = create_tg_user()
     chat = create_tg_chat()
     session = typing.cast(MagicMock, bot_session)
