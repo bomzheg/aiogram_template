@@ -3,6 +3,8 @@ bot:
   log-chat: -1001234567890
   superusers:
     - 666
+  storage:
+    type: memory
   bot-api:
     # can be official (api.telegram.org)
     type: official
@@ -18,5 +20,5 @@ db:
   login: postgres
   password: postgres
   name: aiogram_template_bot
-storage:
-  type: memory
+redis:
+  url: localhost
