@@ -40,7 +40,7 @@ def postgres_url(app_config: Config) -> Generator[DBConfigMock, None, None]:
 @pytest_asyncio.fixture(scope="session")
 async def dishka(postgres_url: DBConfigMock, app_config: Config) -> AsyncGenerator[AsyncContainer, None]:
     mock_provider = Provider(scope=Scope.APP)
-    mock_provider.provide(lambda: postgres_url, provides=DBConfig, override=True)
+    mock_provider.provide(lambda: postgres_url, provides=DBConfig, scope=Scope.APP, override=True)
     container = make_async_container(
         *get_bot_providers(),
         mock_provider,

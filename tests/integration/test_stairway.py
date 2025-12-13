@@ -11,6 +11,7 @@ from alembic.config import Config
 from alembic.script import Script, ScriptDirectory
 
 from app.models.config.main import Paths
+from tests.mocks.config import DBConfigMock
 
 
 def get_revisions() -> list[Script]:
@@ -24,10 +25,10 @@ def get_revisions() -> list[Script]:
 
 
 @pytest.fixture()
-def alembic_config(postgres_url: str, paths: Paths) -> Config:
+def alembic_config(postgres_url: DBConfigMock, paths: Paths) -> Config:
     alembic_cfg = Config(str(paths.app_dir.parent / "alembic.ini"))
     alembic_cfg.set_main_option("script_location", str(paths.app_dir.parent / "migrations"))
-    alembic_cfg.set_main_option("sqlalchemy.url", postgres_url)
+    alembic_cfg.set_main_option("sqlalchemy.url", postgres_url.uri)
     return alembic_cfg
 
 

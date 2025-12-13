@@ -2,6 +2,7 @@ from typing import AsyncIterable
 
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
+from aiogram.client.session.base import BaseSession
 from aiogram.enums import ParseMode
 from dishka import Provider, Scope, provide
 
@@ -12,7 +13,7 @@ class BotProvider(Provider):
     scope = Scope.APP
 
     @provide
-    async def get_bot(self, config: BotConfig, session: None) -> AsyncIterable[Bot]:
+    async def get_bot(self, config: BotConfig, session: BaseSession) -> AsyncIterable[Bot]:
         async with Bot(
             token=config.token,
             session=session,
