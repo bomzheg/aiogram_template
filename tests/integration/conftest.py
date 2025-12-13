@@ -53,7 +53,7 @@ async def dishka(
     container = make_async_container(
         *get_bot_providers(),
         mock_provider,
-        context={"config": app_config},
+        context={Config: app_config},
     )
     yield container
     await container.close()
