@@ -4,11 +4,11 @@ from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.client.session.base import BaseSession
-from aiogram.client.telegram import TelegramAPIServer, PRODUCTION
+from aiogram.client.telegram import PRODUCTION, TelegramAPIServer
 from aiogram.enums import ParseMode
 from dishka import Provider, Scope, provide
 
-from app.models.config.main import BotConfig, BotApiType
+from app.models.config.main import BotApiType, BotConfig
 
 
 class BotProvider(Provider):

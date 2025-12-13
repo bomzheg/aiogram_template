@@ -11,5 +11,3 @@ class DBConfigMock(DBConfig):
     @property
     def uri(self) -> str:
         return self._uri
-
-

@@ -1,8 +1,8 @@
 import logging.config
 
 import yaml
-from adaptix import NameStyle, Retort, name_mapping
-from adaptix.conversion import impl_converter
+from adaptix import NameStyle, P, Retort, name_mapping
+from adaptix.conversion import impl_converter, link_function
 
 from app.models.config import Config
 from app.models.config.main import Paths, _Config
@@ -19,6 +19,6 @@ def load_config(paths: Paths) -> Config:
     return make_config(loaded_config, paths)
 
 
-@impl_converter
+@impl_converter(recipe=[link_function(lambda config: config.db, P[Config].db)])
 def make_config(config: _Config, paths: Paths) -> Config:  # type: ignore[empty-body] # noqa: ARG001
     ...

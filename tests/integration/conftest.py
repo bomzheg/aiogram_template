@@ -7,9 +7,7 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 import pytest_asyncio
 from aiogram.client.session.base import BaseSession
-from dishka import Provider, Scope, AsyncContainer, make_async_container
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.orm import sessionmaker
+from dishka import AsyncContainer, Provider, Scope, make_async_container
 from testcontainers.postgres import PostgresContainer
 
 from app.dao.holder import HolderDao
@@ -24,6 +22,7 @@ logger = logging.getLogger(__name__)
 @pytest_asyncio.fixture
 async def dao(request_dishka: AsyncContainer) -> HolderDao:
     return await request_dishka.get(HolderDao)
+
 
 @pytest.fixture(scope="session")
 def postgres_url(app_config: Config) -> Generator[DBConfigMock, None, None]:
@@ -40,11 +39,16 @@ def postgres_url(app_config: Config) -> Generator[DBConfigMock, None, None]:
     finally:
         postgres.stop()
 
+
 @pytest_asyncio.fixture(scope="session")
-async def dishka(postgres_url: DBConfigMock, app_config: Config) -> AsyncGenerator[AsyncContainer, None]:
+async def dishka(
+    postgres_url: DBConfigMock, app_config: Config
+) -> AsyncGenerator[AsyncContainer, None]:
     mock_provider = Provider(scope=Scope.APP)
     mock_provider.provide(lambda: postgres_url, provides=DBConfig, scope=Scope.APP, override=True)
-    mock_provider.provide(lambda: AsyncMock(BaseSession), provides=BaseSession, scope=Scope.APP, override=True)
+    mock_provider.provide(
+        lambda: AsyncMock(BaseSession), provides=BaseSession, scope=Scope.APP, override=True
+    )
     container = make_async_container(
         *get_bot_providers(),
         mock_provider,
@@ -53,10 +57,12 @@ async def dishka(postgres_url: DBConfigMock, app_config: Config) -> AsyncGenerat
     yield container
     await container.close()
 
-@pytest.fixture
+
+@pytest.fixture()
 async def request_dishka(dishka: AsyncContainer) -> AsyncGenerator[AsyncContainer, None]:
     async with dishka() as scoped:
         yield scoped
+
 
 @pytest_asyncio.fixture
 async def bot_session(dishka: AsyncContainer) -> BaseSession:
@@ -64,6 +70,6 @@ async def bot_session(dishka: AsyncContainer) -> BaseSession:
 
 
 @pytest.fixture(autouse=True)
-def clean_up_bot_session(bot_session: BaseSession):
+def clean_up_bot_session(bot_session: BaseSession) -> None:  # noqa: PT004
     session = typing.cast(MagicMock, bot_session)
     session.reset_mock(return_value=True, side_effect=True)

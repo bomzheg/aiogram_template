@@ -1,8 +1,6 @@
 import logging
 
 from aiogram import Dispatcher
-from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram.client.telegram import PRODUCTION, TelegramAPIServer
 from aiogram.fsm.storage.base import BaseEventIsolation, BaseStorage, DefaultKeyBuilder
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisEventIsolation, RedisStorage
@@ -23,7 +21,7 @@ from app.core.identity import IdentityProvider
 from app.di import get_providers
 from app.di.db import create_redis
 from app.models.config import Config
-from app.models.config.main import BotApiType, BotConfig
+from app.models.config.main import BotConfig
 from app.models.config.storage import StorageConfig, StorageType
 from app.tgbot.handlers import setup_handlers
 from app.tgbot.middlewares import setup_middlewares
@@ -100,7 +98,6 @@ class DpProvider(Provider):
     @provide
     def get_event_isolation(self, redis: Redis) -> BaseEventIsolation:
         return RedisEventIsolation(redis)
-
 
 
 class BotIdpProvider(Provider):

@@ -1,7 +1,7 @@
 from dishka import Provider, Scope, from_context, provide
 
 from app.models.config import Config
-from app.models.config.db import DBConfigProperties, RedisConfig, DBConfig
+from app.models.config.db import DBConfig, RedisConfig
 from app.models.config.main import BotConfig, Paths
 from app.models.config.storage import StorageConfig
 
