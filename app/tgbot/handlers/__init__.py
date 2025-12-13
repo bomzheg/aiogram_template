@@ -2,7 +2,6 @@ import logging
 
 from aiogram import Dispatcher
 
-
 from app.models.config.main import BotConfig
 from app.tgbot.handlers.base import setup_base
 from app.tgbot.handlers.errors import setup_errors

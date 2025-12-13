@@ -103,6 +103,7 @@ ignore = [
     "D",  # docstrings
     "ANN101", "ANN102",  # annotations for self and cls
     "EM101",  # forbidden exceptions with string literals
+    "RET505",  # it prevents if return else return
     "TRY003",  # forbidden long text messages for create exceptions
     "FA100", "FA102",  # from future import annotation related
     "TD002", "TD003", "TD004", "TD005",  # useless TO DO rules
