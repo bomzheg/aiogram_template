@@ -1,42 +1,16 @@
+import asyncio
 import logging
 import os
 from pathlib import Path
-from typing import NoReturn
 
 from aiogram import Bot, Dispatcher
-from sqlalchemy.orm import close_all_sessions
 
 from app.config import load_config
 from app.config.logging_config import setup_logging
 from app.models.config.main import Paths
-from app.tgbot.handlers import setup_handlers
-from app.tgbot.middlewares import setup_middlewares
+from app.tgbot.main_factory import create_dishka
 
 logger = logging.getLogger(__name__)
-
-
-def main() -> NoReturn:
-    paths = get_paths()
-
-    setup_logging(paths)
-    config = load_config(paths)
-
-    dp = Dispatcher()
-    setup_middlewares(dp)
-    setup_handlers(dp, config.bot)
-    bot = Bot(
-        token=config.bot.token,
-        parse_mode="HTML",
-        session=config.bot.create_session(),
-    )
-
-    logger.info("started")
-    try:
-        dp.run_polling(bot)
-    finally:
-        close_all_sessions()
-        logger.info("stopped")
-
 
 def get_paths() -> Paths:
     if path := os.getenv("BOT_PATH"):
@@ -44,5 +18,29 @@ def get_paths() -> Paths:
     return Paths(Path(__file__).parents[2])
 
 
+async def main() -> None:
+    paths = get_paths()
+    setup_logging(paths)
+    config = load_config(paths)
+    dishka = create_dishka(config=config)
+    dp = await dishka.get(Dispatcher)
+    bot = await dishka.get(Bot)
+
+    try:
+        await bot.delete_webhook()
+        await dp.start_polling(
+            bot,
+            allowed_updates=dp.resolve_used_update_types(
+                skip_events={"aiogd_update"})
+                               )
+    finally:
+        logger.info("stopped")
+        await dishka.close()
+
+
+def run() -> None:
+    asyncio.run(main())
+
+
 if __name__ == "__main__":
-    main()
+    run()

@@ -1,6 +1,6 @@
 import logging
 import os
-from typing import Generator
+from typing import AsyncGenerator, Generator
 
 import pytest
 import pytest_asyncio
@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 @pytest_asyncio.fixture
-async def session(pool: sessionmaker) -> AsyncSession:
+async def session(pool: sessionmaker) -> AsyncGenerator[AsyncSession, None]:
     async with pool() as session_:
         yield session_
 
@@ -29,7 +29,9 @@ async def dao(session: AsyncSession) -> HolderDao:
 @pytest.fixture(scope="session")
 def pool(postgres_url: str) -> sessionmaker:
     engine = create_async_engine(url=postgres_url)
-    return sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)
+    return sessionmaker(
+        bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False
+    )  # type: ignore[call-overload]
 
 
 @pytest.fixture(scope="session")
@@ -41,7 +43,7 @@ def postgres_url(app_config: Config) -> Generator[str, None, None]:
         postgres.start()
         postgres_url_ = postgres.get_connection_url().replace("psycopg2", "asyncpg")
         logger.info("postgres url %s", postgres_url_)
-        app_config.db = DBConfig(postgres_url_)
+        app_config.db = DBConfig(postgres_url_)  # type: ignore[assignment]
         yield postgres_url_
     finally:
         postgres.stop()

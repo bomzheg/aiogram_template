@@ -1,7 +1,7 @@
-from sqlalchemy import MetaData
+from sqlalchemy import MetaData, BigInteger
 from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from app.models.config.db import DBConfig
 
@@ -17,6 +17,7 @@ meta = MetaData(naming_convention=convention)
 
 class Base(DeclarativeBase):
     metadata = meta
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
 
 
 def create_pool(db_config: DBConfig) -> async_sessionmaker[AsyncSession]:

@@ -8,10 +8,14 @@ from app.models.db import User
 
 
 class UserDAO(BaseDAO[User]):
-    def __init__(self, session: AsyncSession) -> str:
+    def __init__(self, session: AsyncSession) -> None:
         super().__init__(User, session)
 
-    async def get_by_tg_id(self, tg_id: int) -> User:
+    async def get_by_tg_id(self, tg_id: int) -> dto.User:
+        tg_user = await self._get_by_tg_id(tg_id)
+        return tg_user.to_dto()
+
+    async def _get_by_tg_id(self, tg_id: int) -> User:
         result = await self.session.execute(select(User).where(User.tg_id == tg_id))
         return result.scalar_one()
 

@@ -22,3 +22,8 @@ class StorageConfig:
     def __post_init__(self) -> None:
         if self.type_ is StorageType.redis and self.redis is None:
             raise ValueError("you have to specify redis config for use redis storage")
+
+    def get_redis(self) -> RedisConfig:
+        if self.redis is None:
+            raise ValueError("you have to specify redis config for use redis storage")
+        return self.redis

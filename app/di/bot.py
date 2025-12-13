@@ -4,27 +4,25 @@ from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from dishka import Provider, Scope, provide
-from shvatka.tgbot.config.models.bot import BotConfig
-from shvatka.tgbot.views.bot_alert import BotAlert
-from shvatka.tgbot.views.jinja_filters import setup_jinja
+
+from app.models.config.main import BotConfig
 
 
 class BotProvider(Provider):
     scope = Scope.APP
 
     @provide
-    async def get_bot(self, config: BotConfig) -> AsyncIterable[Bot]:
+    async def get_bot(
+        self,
+        config: BotConfig,
+        session: None
+    ) -> AsyncIterable[Bot]:
         async with Bot(
             token=config.token,
-            session=config.create_session(),
+            session=session,
             default=DefaultBotProperties(
                 parse_mode=ParseMode.HTML,
                 allow_sending_without_reply=True,
             ),
         ) as bot:
-            setup_jinja(bot)
             yield bot
-
-    @provide
-    async def bot_alert(self, bot: Bot, config: BotConfig) -> BotAlert:
-        return BotAlert(bot, config.log_chat)

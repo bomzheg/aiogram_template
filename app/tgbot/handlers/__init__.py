@@ -2,10 +2,11 @@ import logging
 
 from aiogram import Dispatcher
 
-from app.handlers.base import setup_base
-from app.handlers.errors import setup_errors
-from app.handlers.superuser import setup_superuser
+
 from app.models.config.main import BotConfig
+from app.tgbot.handlers.base import setup_base
+from app.tgbot.handlers.errors import setup_errors
+from app.tgbot.handlers.superuser import setup_superuser
 
 logger = logging.getLogger(__name__)
 

@@ -22,6 +22,7 @@ from redis.asyncio import Redis
 from app.core.identity import IdentityProvider
 from app.di import get_providers
 from app.di.db import create_redis
+from app.models.config import Config
 from app.models.config.main import BotApiType, BotConfig
 from app.models.config.storage import StorageConfig, StorageType
 from app.tgbot.handlers import setup_handlers
@@ -32,15 +33,17 @@ from app.tgbot.utils.router import print_router_tree
 logger = logging.getLogger(__name__)
 
 
-def create_dishka(paths_env: str) -> AsyncContainer:
+def create_dishka(config: Config) -> AsyncContainer:
     return make_async_container(
-        *get_bot_providers(paths_env), validation_settings=STRICT_VALIDATION
+        *get_bot_providers(),
+        context={"config": config},
+        validation_settings=STRICT_VALIDATION
     )
 
 
-def get_bot_providers(paths_env: str) -> list[Provider]:
+def get_bot_providers() -> list[Provider]:
     return [
-        *get_providers(paths_env),
+        *get_providers(),
         *get_bot_specific_providers(),
         *get_bot_only_providers(),
     ]
@@ -90,7 +93,8 @@ class DpProvider(Provider):
                 return MemoryStorage()
             case StorageType.redis:
                 return RedisStorage(
-                    create_redis(config.redis), key_builder=DefaultKeyBuilder(with_destiny=True)
+                    create_redis(config.get_redis()),
+                    key_builder=DefaultKeyBuilder(with_destiny=True),
                 )
             case _:
                 raise NotImplementedError

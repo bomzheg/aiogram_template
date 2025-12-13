@@ -6,9 +6,9 @@ from app.di.db import DAOProvider, DbProvider, RedisProvider
 from app.models.config.main import Paths
 
 
-def get_providers(paths_env: str) -> list[Provider]:
+def get_providers() -> list[Provider]:
     return [
-        ConfigProvider(paths_env),
+        ConfigProvider(),
         DbConfigProvider(),
         DbProvider(),
         DAOProvider(),

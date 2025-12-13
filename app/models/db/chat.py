@@ -15,7 +15,7 @@ class Chat(Base):
     title: Mapped[str]
     username: Mapped[str | None]
 
-    def __repr__(self) -> None:
+    def __repr__(self) -> str:
         rez = f"<Chat ID={self.tg_id} title={self.title} "
         if self.username:
             rez += f"username=@{self.username}"

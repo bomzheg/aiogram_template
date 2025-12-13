@@ -6,14 +6,14 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class DBConfig:
-    type: str = None
-    connector: str = None
-    host: str = None
-    port: int = None
-    login: str = None
-    password: str = None
-    name: str = None
-    path: str = None
+    type: str
+    connector: str
+    host: str
+    port: int
+    login: str
+    password: str
+    name: str
+    path: str
     echo: bool = False
 
     @property

@@ -12,6 +12,7 @@ async def test_save_user(dao: HolderDao) -> None:
 
     data = {"event_from_user": create_tg_user()}
     actual = await save_user(data, dao)
+    assert actual is not None
     expected = create_dto_user()
     assert_user(expected, actual)
     assert actual.db_id is not None
@@ -27,11 +28,13 @@ async def test_upsert_user(dao: HolderDao) -> None:
     old = await save_user(data, dao)
     expected_old = create_dto_user()
     expected_old.username = "tom_riddle_friend"
+    assert old is not None
     assert_user(expected_old, old)
 
     data = {"event_from_user": create_tg_user()}
     actual = await save_user(data, dao)
 
+    assert actual is not None
     expected = create_dto_user()
     assert_user(expected, actual)
     assert old.db_id == actual.db_id

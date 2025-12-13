@@ -18,5 +18,4 @@ class LoadDataMiddleware(BaseMiddleware):
 
         data["user"] = await identity_provider.get_user()
         data["chat"] = await identity_provider.get_chat()
-        result = await handler(event, data)  # type: ignore[arg-type]
-        return result  # noqa: RET504
+        return await handler(event, data)

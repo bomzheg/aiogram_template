@@ -1,52 +1,26 @@
-from dishka import Provider, Scope, provide
-from shvatka.common import Config, FileStorageConfig, Paths
-from shvatka.common.config.models.main import WebConfig
-from shvatka.common.config.parser.paths import common_get_paths
-from shvatka.infrastructure.db.config.models.db import DBConfig, RedisConfig
-from shvatka.infrastructure.db.config.models.storage import StorageConfig
-from shvatka.tgbot.config.models.bot import BotConfig, TgClientConfig
-from shvatka.tgbot.config.models.main import TgBotConfig
-from shvatka.tgbot.config.parser.main import load_config as load_bot_config
+from dishka import Provider, Scope, from_context, provide
+
+from app.models.config import Config
+from app.models.config.db import DBConfig, RedisConfig
+from app.models.config.main import BotConfig, Paths
+from app.models.config.storage import StorageConfig
 
 
 class ConfigProvider(Provider):
     scope = Scope.APP
-
-    def __init__(self, path_env: str = "SHVATKA_PATH") -> None:
-        super().__init__()
-        self.path_env = path_env
+    config = from_context(Config)
 
     @provide
-    def get_paths(self) -> Paths:
-        return common_get_paths(self.path_env)
+    def get_paths(self, config: Config) -> Paths:
+        return config.paths
 
     @provide
-    def get_tgbot_config(self, paths: Paths) -> TgBotConfig:
-        return load_bot_config(paths)
-
-    @provide
-    def get_base_config(self, config: TgBotConfig) -> Config:
-        return config
-
-    @provide
-    def get_file_storage_config(self, config: Config) -> FileStorageConfig:
-        return config.file_storage_config
-
-    @provide
-    def get_bot_config(self, config: TgBotConfig) -> BotConfig:
+    def get_tgbot_config(self, config: Config) -> BotConfig:
         return config.bot
 
     @provide
-    def get_bot_storage_config(self, config: TgBotConfig) -> StorageConfig:
+    def get_bot_storage_config(self, config: BotConfig) -> StorageConfig:
         return config.storage
-
-    @provide
-    def get_tg_client_config(self, config: TgBotConfig) -> TgClientConfig:
-        return config.tg_client
-
-    @provide
-    def get_web_app_config(self, config: TgBotConfig) -> WebConfig:
-        return config.web
 
 
 class DbConfigProvider(Provider):

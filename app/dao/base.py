@@ -6,7 +6,7 @@ from sqlalchemy.future import select
 
 from app.models.db.base import Base
 
-Model = TypeVar("Model", Base, Base)
+Model = TypeVar("Model", bound=Base)
 
 
 class BaseDAO(Generic[Model]):
@@ -14,9 +14,9 @@ class BaseDAO(Generic[Model]):
         self.model = model
         self.session = session
 
-    async def get_all(self) -> list[Model]:
+    async def get_all(self) -> Sequence[Model]:
         result = await self.session.execute(select(self.model))
-        return result.all()
+        return result.scalars().all()
 
     async def get_by_id(self, id_: int) -> Model:
         result = await self.session.execute(select(self.model).where(self.model.id == id_))
@@ -28,7 +28,7 @@ class BaseDAO(Generic[Model]):
     async def delete_all(self) -> None:
         await self.session.execute(delete(self.model))
 
-    async def count(self) -> None:
+    async def count(self) -> int:
         result = await self.session.execute(select(func.count(self.model.id)))
         return result.scalar_one()
 

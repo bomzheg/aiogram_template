@@ -36,7 +36,7 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: AsyncConnection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(connection=connection, target_metadata=target_metadata) # type: ignore[arg-type]
 
     with context.begin_transaction():
         context.run_migrations()
@@ -51,16 +51,16 @@ async def run_migrations_online() -> None:
     """
     connectable = AsyncEngine(
         create_engine(
-            url=config.get_main_option("sqlalchemy.url"),
+            url=config.get_main_option("sqlalchemy.url"),  # type: ignore[arg-type]
             poolclass=pool.NullPool,
             future=True,
         )
     )
 
     async with connectable.connect() as connection:
-        context.configure(connection=connection, target_metadata=target_metadata)
+        context.configure(connection=connection, target_metadata=target_metadata) # type: ignore[arg-type]
 
-        await connection.run_sync(do_run_migrations)
+        await connection.run_sync(do_run_migrations) # type: ignore[arg-type]
 
 
 if context.is_offline_mode():
