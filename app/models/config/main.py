@@ -11,7 +11,7 @@ from app.models.config.storage import StorageConfig
 @dataclass(kw_only=True)
 class Config:
     paths: Paths
-    db: DBConfig
+    db: DBConfigProperties
     redis: RedisConfig
     bot: BotConfig
 

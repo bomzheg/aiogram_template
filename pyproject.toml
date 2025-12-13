@@ -20,7 +20,7 @@ dependencies = [
     "asyncpg>=0.27.0,<1.0",
     "ujson>=5.5.0,<6.0",
     "redis>=5.0.1,<6.0",
-    "adaptix==3.0.0b9",
+    "adaptix==3.0.0b11",
     "fastapi==0.111.1",
     "uvicorn>=0.30.0,<0.31.0",
     "greenlet<4.0.0",
