@@ -8,7 +8,7 @@ from app.models.config.db import DBConfig, RedisConfig
 from app.models.config.storage import StorageConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Config:
     paths: Paths
     db: DBConfig
@@ -28,7 +28,14 @@ class Config:
         return self.paths.log_path
 
 
-@dataclass
+@dataclass(kw_only=True, frozen=True, slots=True)
+class _Config:
+    db: DBConfig
+    redis: RedisConfig
+    bot: BotConfig
+
+
+@dataclass(kw_only=True, frozen=True, slots=True)
 class Paths:
     app_dir: Path
 
@@ -45,7 +52,7 @@ class Paths:
         return self.app_dir / "log"
 
 
-@dataclass
+@dataclass(kw_only=True, frozen=True, slots=True)
 class BotConfig:
     token: str
     log_chat: int
@@ -54,11 +61,11 @@ class BotConfig:
     storage: StorageConfig
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, frozen=True)
 class BotApiConfig:
     type: BotApiType
-    botapi_url: str | None
-    botapi_file_url: str | None
+    botapi_url: str | None = None
+    botapi_file_url: str | None = None
 
     @property
     def is_local(self) -> bool:

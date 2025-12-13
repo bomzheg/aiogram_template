@@ -14,7 +14,7 @@ class StorageType(Enum):
     redis = "redis"
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, frozen=True)
 class StorageConfig:
     type_: StorageType
     redis: RedisConfig | None = None

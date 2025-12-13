@@ -16,7 +16,7 @@ def app_config(paths: Paths) -> Config:
 
 @pytest.fixture(scope="session")
 def paths() -> Paths:
-    return Paths(Path(__file__).parent)
+    return Paths(app_dir=Path(__file__).parent)
 
 
 @pytest.fixture(scope="session")

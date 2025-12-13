@@ -1,10 +1,12 @@
 bot:
   token: "123:ABC"
-  log_chat: -1001234567890
+  log-chat: -1001234567890
   superusers:
     - 46866565
-  botapi:
+  bot-api:
     type: official
+  storage:
+    type: memory
 db:
   type: postgresql
   connector: asyncpg
@@ -13,3 +15,5 @@ db:
   login: test
   password: test
   name: test
+redis:
+  url: localhost

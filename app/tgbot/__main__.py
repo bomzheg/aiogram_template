@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 def get_paths() -> Paths:
     if path := os.getenv("BOT_PATH"):
-        return Paths(Path(path))
-    return Paths(Path(__file__).parents[2])
+        return Paths(app_dir=Path(path))
+    return Paths(app_dir=Path(__file__).parents[2])
 
 
 async def main() -> None:

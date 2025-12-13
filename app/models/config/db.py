@@ -4,7 +4,7 @@ from dataclasses import dataclass
 logger = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(kw_only=True, frozen=True, slots=True)
 class DBConfig:
     type: str
     connector: str
@@ -13,7 +13,7 @@ class DBConfig:
     login: str
     password: str
     name: str
-    path: str
+    path: str = ""
     echo: bool = False
 
     @property
@@ -32,7 +32,7 @@ class DBConfig:
         return url
 
 
-@dataclass
+@dataclass(kw_only=True, frozen=True, slots=True)
 class RedisConfig:
     url: str
     port: int = 6379
