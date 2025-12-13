@@ -3,7 +3,7 @@ from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from app.models.config.db import DBConfig
+from app.models.config.db import DBConfigProperties, DBConfig
 
 convention = {
     "ix": "ix__%(column_0_label)s",

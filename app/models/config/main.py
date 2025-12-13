@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-from app.models.config.db import DBConfig, RedisConfig
+from app.models.config.db import DBConfigProperties, RedisConfig, DBConfig
 from app.models.config.storage import StorageConfig
 
 
@@ -30,7 +30,7 @@ class Config:
 
 @dataclass(kw_only=True, frozen=True, slots=True)
 class _Config:
-    db: DBConfig
+    db: DBConfigProperties
     redis: RedisConfig
     bot: BotConfig
 

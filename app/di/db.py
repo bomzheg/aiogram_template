@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import (
 
 from app import dao
 from app.dao.holder import HolderDao
-from app.models.config.db import DBConfig, RedisConfig
+from app.models.config.db import DBConfigProperties, RedisConfig, DBConfig
 
 logger = logging.getLogger(__name__)
 

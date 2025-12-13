@@ -1,11 +1,20 @@
 import logging
 from dataclasses import dataclass
+from typing import Protocol
 
 logger = logging.getLogger(__name__)
 
 
+class DBConfig(Protocol):
+    echo: bool
+
+    @property
+    def uri(self) -> str:
+        raise NotImplementedError
+
+
 @dataclass(kw_only=True, frozen=True, slots=True)
-class DBConfig:
+class DBConfigProperties(DBConfig):
     type: str
     connector: str
     host: str

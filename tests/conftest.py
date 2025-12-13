@@ -8,7 +8,7 @@ from app.config.main import load_config
 from app.models.config.main import Config, Paths
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def app_config(paths: Paths) -> Config:
     setup_logging(paths)
     return load_config(paths)
