@@ -12,11 +12,7 @@ class BotProvider(Provider):
     scope = Scope.APP
 
     @provide
-    async def get_bot(
-        self,
-        config: BotConfig,
-        session: None
-    ) -> AsyncIterable[Bot]:
+    async def get_bot(self, config: BotConfig, session: None) -> AsyncIterable[Bot]:
         async with Bot(
             token=config.token,
             session=session,

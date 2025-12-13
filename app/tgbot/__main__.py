@@ -12,6 +12,7 @@ from app.tgbot.main_factory import create_dishka
 
 logger = logging.getLogger(__name__)
 
+
 def get_paths() -> Paths:
     if path := os.getenv("BOT_PATH"):
         return Paths(app_dir=Path(path))
@@ -29,10 +30,8 @@ async def main() -> None:
     try:
         await bot.delete_webhook()
         await dp.start_polling(
-            bot,
-            allowed_updates=dp.resolve_used_update_types(
-                skip_events={"aiogd_update"})
-                               )
+            bot, allowed_updates=dp.resolve_used_update_types(skip_events={"aiogd_update"})
+        )
     finally:
         logger.info("stopped")
         await dishka.close()

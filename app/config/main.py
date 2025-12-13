@@ -1,18 +1,16 @@
 import logging.config
 
 import yaml
-from adaptix import Retort, name_mapping, NameStyle
+from adaptix import NameStyle, Retort, name_mapping
 from adaptix.conversion import impl_converter
 
 from app.models.config import Config
-from app.models.config.main import _Config
-from app.models.config.main import Paths
+from app.models.config.main import Paths, _Config
 
 logger = logging.getLogger(__name__)
 
-retort = Retort(recipe=[
-    name_mapping(name_style=NameStyle.LOWER_KEBAB)
-])
+retort = Retort(recipe=[name_mapping(name_style=NameStyle.LOWER_KEBAB)])
+
 
 def load_config(paths: Paths) -> Config:
     with (paths.config_path / "config.yaml").open("r") as f:
@@ -22,5 +20,5 @@ def load_config(paths: Paths) -> Config:
 
 
 @impl_converter
-def make_config(config: _Config, paths: Paths) -> Config:
-    pass
+def make_config(config: _Config, paths: Paths) -> Config:  # type: ignore[empty-body] # noqa: ARG001
+    ...

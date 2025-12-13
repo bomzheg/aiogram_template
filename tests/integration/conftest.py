@@ -29,9 +29,7 @@ async def dao(session: AsyncSession) -> HolderDao:
 @pytest.fixture(scope="session")
 def pool(postgres_url: str) -> sessionmaker:
     engine = create_async_engine(url=postgres_url)
-    return sessionmaker(
-        bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False
-    )  # type: ignore[call-overload]
+    return sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False, autoflush=False)  # type: ignore[call-overload]
 
 
 @pytest.fixture(scope="session")

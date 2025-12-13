@@ -35,9 +35,7 @@ logger = logging.getLogger(__name__)
 
 def create_dishka(config: Config) -> AsyncContainer:
     return make_async_container(
-        *get_bot_providers(),
-        context={"config": config},
-        validation_settings=STRICT_VALIDATION
+        *get_bot_providers(), context={"config": config}, validation_settings=STRICT_VALIDATION
     )
 
 
