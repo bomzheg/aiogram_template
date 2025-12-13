@@ -1,9 +1,9 @@
 bot:
   token: ""
-  log_chat: -1001234567890
+  log-chat: -1001234567890
   superusers:
     - 666
-  botapi:
+  bot-api:
     # can be official (api.telegram.org)
     type: official
 #    # or local (setup in docker-compose.yml)
@@ -18,3 +18,5 @@ db:
   login: postgres
   password: postgres
   name: aiogram_template_bot
+storage:
+  type: memory
