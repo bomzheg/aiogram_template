@@ -2,7 +2,6 @@ import logging.config
 
 import yaml
 from adaptix import NameStyle, Retort, name_mapping
-from adaptix.conversion import impl_converter
 
 from app.models.config import Config
 from app.models.config.main import Paths, _Config
@@ -19,6 +18,10 @@ def load_config(paths: Paths) -> Config:
     return make_config(loaded_config, paths)
 
 
-@impl_converter
 def make_config(config: _Config, paths: Paths) -> Config:  # type: ignore[empty-body] # noqa: ARG001
-    ...
+    return Config(
+        paths=paths,
+        db=config.db,
+        redis=config.redis,
+        bot=config.bot,
+    )
