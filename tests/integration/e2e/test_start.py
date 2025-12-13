@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 import typing
 from unittest.mock import MagicMock
 
+import pytest_asyncio
 from aiogram import Dispatcher, Bot
 from aiogram.client.session.base import BaseSession
 from aiogram.types import Update, Message

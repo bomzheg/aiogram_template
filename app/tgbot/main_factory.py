@@ -2,7 +2,7 @@ import logging
 
 from aiogram import Dispatcher
 from aiogram.fsm.storage.base import BaseEventIsolation, BaseStorage, DefaultKeyBuilder
-from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
 from aiogram.fsm.storage.redis import RedisEventIsolation, RedisStorage
 from aiogram.types import TelegramObject
 from dishka import (
@@ -98,8 +98,8 @@ class DpProvider(Provider):
                 raise NotImplementedError
 
     @provide
-    def get_event_isolation(self, redis: Redis) -> BaseEventIsolation:
-        return RedisEventIsolation(redis)
+    def get_event_isolation(self) -> BaseEventIsolation:
+        return SimpleEventIsolation()
 
 
 class BotIdpProvider(Provider):
