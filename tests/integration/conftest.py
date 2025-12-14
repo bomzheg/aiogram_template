@@ -88,7 +88,7 @@ def clean_up_bot_session(bot_session: BaseSession) -> None:  # noqa: PT004
     session.reset_mock(return_value=True, side_effect=True)
 
 
-async def clear_data(dao: HolderDao):
+async def clear_data(dao: HolderDao) -> None:
     await dao.chat.delete_all()
     await dao.user.delete_all()
     await dao.commit()

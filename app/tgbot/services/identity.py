@@ -10,6 +10,7 @@ from app.dao.holder import HolderDao
 from app.models import dto
 from app.tgbot.services.chat import upsert_chat
 from app.tgbot.services.user import upsert_user
+from app.tgbot.utils.mappers import chat_tg_to_dto, user_tg_to_dto
 
 
 class LoadedData(TypedDict, total=False):
@@ -63,11 +64,11 @@ async def save_user(data: dict[str, Any], holder_dao: HolderDao) -> dto.User | N
     user = data.get("event_from_user")
     if not user:
         return None
-    return await upsert_user(dto.User.from_aiogram(user), holder_dao.user)
+    return await upsert_user(user_tg_to_dto(user), holder_dao.user)
 
 
 async def save_chat(data: dict[str, Any], holder_dao: HolderDao) -> dto.Chat | None:
     chat = data.get("event_chat")
     if not chat:
         return None
-    return await upsert_chat(dto.Chat.from_aiogram(chat), holder_dao.chat)
+    return await upsert_chat(chat_tg_to_dto(chat), holder_dao.chat)

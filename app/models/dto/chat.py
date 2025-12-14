@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from aiogram import types as tg
-
 from app.enums.chat_type import ChatType
 
 
@@ -34,14 +32,3 @@ class Chat:
         if self.type == ChatType.private:
             return self.full_name
         return self.title or str(self.tg_id)
-
-    @classmethod
-    def from_aiogram(cls, chat: tg.Chat) -> Chat:
-        return cls(
-            tg_id=chat.id,
-            title=chat.title,
-            type=ChatType[chat.type],
-            username=chat.username,
-            first_name=chat.first_name,
-            last_name=chat.last_name,
-        )
