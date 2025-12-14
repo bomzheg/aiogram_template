@@ -22,7 +22,9 @@ logger = logging.getLogger(__name__)
 
 @pytest_asyncio.fixture
 async def dao(request_dishka: AsyncContainer) -> HolderDao:
-    return await request_dishka.get(HolderDao)
+    dao_ = await request_dishka.get(HolderDao)
+    await clear_data(dao_)
+    return dao_
 
 
 @pytest.fixture(scope="session")
@@ -84,3 +86,9 @@ async def dp(dishka: AsyncContainer) -> Dispatcher:
 def clean_up_bot_session(bot_session: BaseSession) -> None:  # noqa: PT004
     session = typing.cast(MagicMock, bot_session)
     session.reset_mock(return_value=True, side_effect=True)
+
+
+async def clear_data(dao: HolderDao):
+    await dao.chat.delete_all()
+    await dao.user.delete_all()
+    await dao.commit()
