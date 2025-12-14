@@ -1,18 +1,18 @@
 from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-from aiogram.client.session.aiohttp import AiohttpSession
-from aiogram.client.telegram import TelegramAPIServer
-
-from app.models.config.db import DBConfig
+from app.models.config.db import DBConfig, DBConfigProperties, RedisConfig
+from app.models.config.storage import StorageConfig
 
 
-@dataclass
+@dataclass(kw_only=True)
 class Config:
     paths: Paths
     db: DBConfig
+    redis: RedisConfig
     bot: BotConfig
 
     @property
@@ -28,7 +28,14 @@ class Config:
         return self.paths.log_path
 
 
-@dataclass
+@dataclass(kw_only=True, frozen=True, slots=True)
+class _Config:
+    db: DBConfigProperties
+    redis: RedisConfig
+    bot: BotConfig
+
+
+@dataclass(kw_only=True, frozen=True, slots=True)
 class Paths:
     app_dir: Path
 
@@ -45,36 +52,24 @@ class Paths:
         return self.app_dir / "log"
 
 
-@dataclass
+@dataclass(kw_only=True, frozen=True, slots=True)
 class BotConfig:
     token: str
     log_chat: int
     superusers: list[int]
     bot_api: BotApiConfig
-
-    def create_session(self) -> AiohttpSession | None:
-        if self.bot_api.is_local:
-            return AiohttpSession(api=self.bot_api.create_server())
-        return None
+    storage: StorageConfig
 
 
-@dataclass
+@dataclass(kw_only=True, slots=True, frozen=True)
 class BotApiConfig:
     type: BotApiType
-    botapi_url: str | None
-    botapi_file_url: str | None
+    botapi_url: str | None = None
+    botapi_file_url: str | None = None
 
     @property
     def is_local(self) -> bool:
         return self.type == BotApiType.local
-
-    def create_server(self) -> TelegramAPIServer:
-        if self.type != BotApiType.local:
-            raise RuntimeError("can create only local botapi server")
-        return TelegramAPIServer(
-            base=f"{self.botapi_url}/bot{{token}}/{{method}}",
-            file=f"{self.botapi_file_url}{{path}}",
-        )
 
 
 class BotApiType(Enum):

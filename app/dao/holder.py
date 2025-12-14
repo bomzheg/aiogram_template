@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dao import UserDAO, ChatDAO
+from app.dao import ChatDAO, UserDAO
 
 
 @dataclass
@@ -11,9 +11,9 @@ class HolderDao:
     user: UserDAO = field(init=False)
     chat: ChatDAO = field(init=False)
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.user = UserDAO(self.session)
         self.chat = ChatDAO(self.session)
 
-    async def commit(self):
+    async def commit(self) -> None:
         await self.session.commit()

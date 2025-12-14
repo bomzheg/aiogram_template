@@ -1,37 +1,24 @@
 import logging.config
 
 import yaml
+from adaptix import NameStyle, P, Retort, name_mapping
+from adaptix.conversion import impl_converter, link_function
 
-from app.config.db import load_db_config
 from app.models.config import Config
-from app.models.config.main import Paths, BotConfig, BotApiConfig, BotApiType
+from app.models.config.main import Paths, _Config
 
 logger = logging.getLogger(__name__)
+
+retort = Retort(recipe=[name_mapping(name_style=NameStyle.LOWER_KEBAB)])
 
 
 def load_config(paths: Paths) -> Config:
     with (paths.config_path / "config.yaml").open("r") as f:
         config_dct = yaml.safe_load(f)
-
-    return Config(
-        paths=paths,
-        db=load_db_config(config_dct["db"]),
-        bot=load_bot_config(config_dct["bot"]),
-    )
+    loaded_config = retort.load(config_dct, _Config)
+    return make_config(loaded_config, paths)
 
 
-def load_bot_config(dct: dict) -> BotConfig:
-    return BotConfig(
-        token=dct["token"],
-        log_chat=dct["log_chat"],
-        superusers=dct["superusers"],
-        bot_api=load_botapi(dct["botapi"])
-    )
-
-
-def load_botapi(dct: dict) -> BotApiConfig:
-    return BotApiConfig(
-        type=BotApiType[dct["type"]],
-        botapi_url=dct.get("botapi_url", None),
-        botapi_file_url=dct.get("file_url", None),
-    )
+@impl_converter(recipe=[link_function(lambda config: config.db, P[Config].db)])
+def make_config(config: _Config, paths: Paths) -> Config:  # type: ignore[empty-body] # noqa: ARG001
+    ...

@@ -6,6 +6,7 @@ name: TemplateBotBuild
 on:
   push:
     branches: [ master ]
+    tags: ["*.*.*"]
 
 jobs:
   call-test-workflow:
@@ -15,6 +16,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Get current date
+        id: date
+        run: |
+          echo "BUILD_AT=$(date +'%Y-%m-%dT%H:%M:%S%z')" >> "$GITHUB_OUTPUT"
+          echo "VCS_SHA=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
       - uses: mr-smithers-excellent/docker-build-push@v5.6
         with:
           image: bomzheg/aiogram_template
@@ -22,3 +28,4 @@ jobs:
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          buildArgs: "BUILD_AT=${{steps.date.outputs.BUILD_AT}},VCS_SHA=${{steps.date.outputs.VCS_SHA}}"

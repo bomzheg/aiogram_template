@@ -4,23 +4,23 @@ from pathlib import Path
 import pytest
 
 from app.config.logging_config import setup_logging
-from app.models.config.main import Paths, Config
 from app.config.main import load_config
+from app.models.config.main import Config, Paths
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="session")
 def app_config(paths: Paths) -> Config:
     setup_logging(paths)
     return load_config(paths)
 
 
 @pytest.fixture(scope="session")
-def paths():
-    return Paths(Path(__file__).parent)
+def paths() -> Paths:
+    return Paths(app_dir=Path(__file__).parent)
 
 
 @pytest.fixture(scope="session")
-def event_loop():
+def event_loop() -> asyncio.AbstractEventLoop:
     try:
         return asyncio.get_running_loop()
     except RuntimeError:
