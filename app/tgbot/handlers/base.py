@@ -1,14 +1,16 @@
 import logging
 import typing
 
-from aiogram import Dispatcher, F, Router
+from aiogram import F, Router
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import ContentType, Message, ReplyKeyboardRemove
 from aiogram.utils.markdown import html_decoration as hd
+from dishka import FromDishka
+from dishka.integrations.aiogram import inject
 
-from app.dao.holder import HolderDao
-from app.models import dto
+from app.core.identity import IdentityProvider
+from app.dao import ChatDAO
 from app.tgbot.services.chat import update_chat_id
 
 logger = logging.getLogger(__name__)
@@ -41,9 +43,12 @@ async def cancel_state(message: Message, state: FSMContext) -> None:
     await message.reply("Dialog stopped, data removed", reply_markup=ReplyKeyboardRemove())
 
 
-async def chat_migrate(message: Message, chat: dto.Chat, dao: HolderDao) -> None:
+@inject
+async def chat_migrate(
+    message: Message, identity: IdentityProvider, dao: FromDishka[ChatDAO]
+) -> None:
     new_id = typing.cast(int, message.migrate_to_chat_id)
-    await update_chat_id(chat, new_id, dao.chat)
+    await update_chat_id(await identity.get_required_chat(), new_id, dao)
     logger.info("Migrate chat from %s to %s", message.chat.id, new_id)
 
 

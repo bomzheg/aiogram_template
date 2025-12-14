@@ -1,7 +1,7 @@
 from functools import partial
 from typing import NoReturn
 
-from aiogram import Bot, Dispatcher, Router
+from aiogram import Bot, Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
