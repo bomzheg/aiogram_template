@@ -12,6 +12,6 @@ logger = logging.getLogger(__name__)
 
 def setup_handlers(dp: Dispatcher, bot_config: BotConfig) -> None:
     setup_errors(dp, bot_config.log_chat)
-    setup_base(dp)
-    setup_superuser(dp, bot_config)
+    dp.include_router(setup_base())
+    dp.include_router(setup_superuser(bot_config))
     logger.debug("handlers configured successfully")

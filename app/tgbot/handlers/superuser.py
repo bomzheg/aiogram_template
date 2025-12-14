@@ -17,11 +17,10 @@ async def leave_chat(message: Message, bot: Bot) -> None:
     await bot.leave_chat(message.chat.id)
 
 
-def setup_superuser(dp: Dispatcher, bot_config: BotConfig) -> None:
+def setup_superuser(bot_config: BotConfig) -> Router:
     is_superuser_ = partial(is_superuser, superusers=bot_config.superusers)
     router = Router(name=__name__)
     router.message.filter(is_superuser_)
     router.message.register(exception, Command(commands="exception"))
     router.message.register(leave_chat, Command(commands="get_out"))
-
-    dp.include_router(router)
+    return router
