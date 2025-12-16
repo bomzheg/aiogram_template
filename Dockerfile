@@ -20,6 +20,5 @@ WORKDIR $CODE_PATH
 COPY . ${CODE_PATH}/
 RUN uv sync --locked --project ${CODE_PATH}
 
-WORKDIR $CODE_PATH/app
 RUN echo "{\"vcs_hash\": \"${VCS_SHA}\", \"build_at\": \"${BUILD_AT}\" }" > version.yaml
 ENTRYPOINT ["python3", "-m", "app.tgbot"]
