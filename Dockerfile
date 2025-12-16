@@ -11,7 +11,7 @@ ENV UV_NO_DEV=1
 ENV UV_TOOL_BIN_DIR=/usr/local/bin
 RUN uv venv $VIRTUAL_ENV
 # Place executables in the environment at the front of the path
-ENV PATH="${VIRTUAL_ENV}:$PATH"
+ENV PATH="${VIRTUAL_ENV}/bin:$PATH"
 WORKDIR $CODE_PATH
 COPY . ${CODE_PATH}/
 RUN uv sync --locked --project ${CODE_PATH}
