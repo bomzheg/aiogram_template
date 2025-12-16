@@ -3,7 +3,8 @@ ENV VIRTUAL_ENV=/opt/venv
 ENV CODE_PATH=/code
 RUN uv venv $VIRTUAL_ENV
 WORKDIR $CODE_PATH
-COPY lock.txt ${CODE_PATH}/
+COPY uv.lock ${CODE_PATH}/
+COPY pyproject.toml ${CODE_PATH}/
 RUN $VIRTUAL_ENV/bin/uv uv sync --locked
 
 FROM python:3.13-slim-bookworm
