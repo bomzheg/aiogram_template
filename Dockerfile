@@ -5,7 +5,7 @@ RUN uv venv $VIRTUAL_ENV
 WORKDIR $CODE_PATH
 COPY uv.lock ${CODE_PATH}/
 COPY pyproject.toml ${CODE_PATH}/
-RUN $VIRTUAL_ENV/bin/uv uv sync --locked
+RUN $VIRTUAL_ENV/bin/uv sync --locked --project ${CODE_PATH}
 
 FROM python:3.13-slim-bookworm
 LABEL maintainer="bomzheg <bomzheg@gmail.com>" \
