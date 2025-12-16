@@ -8,13 +8,9 @@ services:
     image: bomzheg/aiogram_template
     volumes:
       - type: "bind"
-        source: "${HOME}/TemplateBot/log"
-        target: "/log"
-      - type: "bind"
         source: "./config"
         target: "/config"
-    env_file: config/.env
-    entrypoint: [ "python3", "-m", "app"]
+    entrypoint: [ "python3", "-m", "app.tgbot"]
     networks:
       - reverse-proxy
       - botapi
@@ -45,6 +41,7 @@ volumes:
   telegram-bot-api-data:
 
 networks:
+  botapi:
   reverse-proxy:
     external:
-      name: nginx-revers-proxy
+      name: nginx-reverse-proxy
