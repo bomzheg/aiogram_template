@@ -21,4 +21,4 @@ COPY . ${CODE_PATH}/
 RUN uv sync --locked --project ${CODE_PATH}
 
 RUN echo "{\"vcs_hash\": \"${VCS_SHA}\", \"build_at\": \"${BUILD_AT}\" }" > version.yaml
-ENTRYPOINT ["python3", "-m", "app.tgbot"]
+ENTRYPOINT ["${VIRTUAL_ENV}/python", "-m", "app.tgbot"]
