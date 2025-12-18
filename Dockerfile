@@ -3,8 +3,8 @@ LABEL maintainer="bomzheg <bomzheg@gmail.com>" \
       description="Telegram Bot"
 ARG VCS_SHA
 ARG BUILD_AT
-ENV VIRTUAL_ENV=/opt/venv
 ENV CODE_PATH=/code
+ENV VIRTUAL_ENV=${CODE_PATH}/venv
 # Enable bytecode compilation
 ENV UV_COMPILE_BYTECODE=1
 # Copy from the cache instead of linking since it's a mounted volume
