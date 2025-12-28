@@ -1,16 +1,12 @@
-version: '3.2'
-
 services:
 
   template_bot:
     container_name: template_bot
     restart: always
     image: bomzheg/aiogram_template
+    pull_policy: always
     volumes:
-      - type: "bind"
-        source: "./config"
-        target: "/config"
-    entrypoint: [ "python3", "-m", "app.tgbot"]
+      - "./config:/config"
     networks:
       - reverse-proxy
       - botapi
