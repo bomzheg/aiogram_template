@@ -52,7 +52,7 @@ async def chat_migrate(
     logger.info("Migrate chat from %s to %s", message.chat.id, new_id)
 
 
-def setup_base() -> Router:
+def setup() -> Router:
     router = Router(name=__name__)
     router.message.register(start_cmd, Command("start"))
     router.message.register(

@@ -17,7 +17,7 @@ async def leave_chat(message: Message, bot: Bot) -> None:
     await bot.leave_chat(message.chat.id)
 
 
-def setup_superuser(bot_config: BotConfig) -> Router:
+def setup(bot_config: BotConfig) -> Router:
     is_superuser_ = partial(is_superuser, superusers=bot_config.superusers)
     router = Router(name=__name__)
     router.message.filter(is_superuser_)

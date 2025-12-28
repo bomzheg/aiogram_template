@@ -28,7 +28,7 @@ dependencies = [
     "asgi-monitor>=0.4.0,<0.5.0",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "locust>=2.15.1,<3",
 ]

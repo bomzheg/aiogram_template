@@ -17,7 +17,7 @@ source venv/bin/activate
 ```
 * install dependencies
 ```bash
-pip install -r requirements.txt
+uv sync --group test
 ```
 * Fill in alembic.ini (probably only db url)
 * apply migrations
@@ -26,5 +26,5 @@ alembic upgrade head
 ```
 * ... and run
 ```bash
-python -m app
+python -m app.tgbot
 ```

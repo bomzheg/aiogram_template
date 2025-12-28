@@ -26,5 +26,5 @@ async def handle(error: ErrorEvent, log_chat_id: int, bot: Bot) -> None:
     )
 
 
-def setup_errors(dp: Dispatcher, log_chat_id: int) -> None:
+def setup(dp: Dispatcher, log_chat_id: int) -> None:
     dp.errors.register(partial(handle, log_chat_id=log_chat_id))
